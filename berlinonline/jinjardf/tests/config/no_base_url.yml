@@ -1,0 +1,3 @@
+# basic config
+
+base_path: '/jinja-rdf/example' # the subpath of your site, e.g. /blog

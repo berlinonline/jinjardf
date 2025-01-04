@@ -1,0 +1,78 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix ducks: <https://berlinonline.github.io/jinja-rdf/example/ducks/> .
+@prefix family: <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/> .
+@prefix void: <http://rdfs.org/ns/void> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ducks:
+    a void:Dataset ;
+    dct:title "Duck Family Tree"@en ;
+    dct:description """Excerpt of the family tree of the fictional character Donald Duck."""@en ;
+    dct:created "2024-12-13"^^xsd:date ;
+    dct:modified "2024-12-13"^^xsd:date ;
+    dct:license <https://creativecommons.org/publicdomain/zero/1.0/> ;
+    foaf:homepage <https://github.com/berlinonline/jinja-rdf> ;
+    void:dataDump <https://raw.githubusercontent.com/berlinonline/jinja-rdf/main/berlinonline/jinjardf/tests/data/ducks.ttl> ;
+    void:feature <http://www.w3.org/ns/formats/Turtle> ;
+    void:exampleResource ducks:DonaldDuck ;
+    void:exampleResource ducks:ScroogeMcDuck ;
+    void:vocabulary schema: ;
+.
+
+# Characters
+ducks:DonaldDuck a schema:Person ;
+    schema:name  "Donald Duck"@en, "Donald Duck"@de, "Donald Duck"@fr, "Pato Donald"@es, "Anders And"@da ;
+    schema:gender "male" ;
+    family:hasParent ducks:QuackmoreDuck, ducks:HortenseMcDuck .
+
+ducks:DellaDuck a schema:Person ;
+    schema:name "Della Duck"@en, "Della Duck"@de, "Della Duck"@fr, "Bella Pato"@es, "Della And"@da ;
+    schema:gender "female" ;
+    family:hasParent ducks:QuackmoreDuck, ducks:HortenseMcDuck .
+
+ducks:HortenseMcDuck a schema:Person ;
+    schema:name "Hortense McDuck"@en, "Hortense McDuck"@de, "Hortense McDuck"@fr, "Hortensia McPato"@es, "Hortensia von And"@da ;
+    schema:gender "female" ;
+    family:hasParent ducks:FergusMcDuck, ducks:DownyODrake .
+
+ducks:QuackmoreDuck a schema:Person ;
+    schema:name "Quackmore Duck"@en, "Degenhard Duck"@de, "Rodolphe Duck"@fr, "Dabney Duck"@es, "Didrik Duck"@da ;
+    schema:gender "male" .
+
+ducks:GrandmaDuck a schema:Person ;
+    schema:name "Grandma Duck"@en, "Oma Duck"@de, "Mamie Baba"@fr, "Abuela Pato"@es, "Bedstemor And"@da ;
+    schema:gender "female" .
+
+ducks:HumperdinkDuck a schema:Person ;
+    schema:name "Humperdink Duck"@en, "Dagobert Duckenhof"@de, "Gontran Duck"@fr, "Danken Pato"@es, "Cornelius And"@da ;
+    schema:gender "male" .
+
+ducks:ScroogeMcDuck a schema:Person ;
+    schema:name "Scrooge McDuck"@en, "Dagobert Duck"@de, "Balthazar Picsou"@fr, "Tío Gilito"@es, "Joakim von And"@da ;
+    schema:gender "male" ;
+    family:hasParent ducks:FergusMcDuck, ducks:DownyODrake .
+
+ducks:FergusMcDuck a schema:Person ;
+    schema:name "Fergus McDuck"@en, "Fergus McDuck"@de, "Fergus Picsou"@fr, "Fergus McPato"@es, "Fergus von And"@da ;
+    schema:gender "male" .
+
+ducks:DownyODrake a schema:Person ;
+    schema:name "Downy O'Drake"@en, "Dortel Duck"@de, "Douce Picsou"@fr, "Downy O’Draco"@es, "Downy O'Drake"@da ;
+    schema:gender "female" .
+
+ducks:Huey a schema:Person ;
+    schema:name "Huey"@en, "Tick"@de, "Riri"@fr, "Jaimito"@es, "Rip"@da ;
+    schema:gender "male" ;
+    family:hasParent ducks:DellaDuck .
+
+ducks:Dewey a schema:Person ;
+    schema:name "Dewey"@en, "Trick"@de, "Fifi"@fr, "Jorgito"@es, "Rap"@da ;
+    schema:gender "male" ;
+    family:hasParent ducks:DellaDuck .
+
+ducks:Louie a schema:Person ;
+    schema:name "Louie"@en, "Track"@de, "Loulou"@fr, "Juanito"@es, "Rup"@da ;
+    schema:gender "male" ;
+    family:hasParent ducks:DellaDuck .

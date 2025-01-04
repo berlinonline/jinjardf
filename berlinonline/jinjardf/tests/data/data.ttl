@@ -1,0 +1,11 @@
+# this should be ignored:
+<#foo> a <#Thing> .
+
+# this should be rendered at /index.html
+<https://berlinonline.github.io/> a <#Thing> .
+<https://berlinonline.github.io/> <#property> <#Thing> .
+
+# this should be rendered at /jinjardf/example/index.html
+<https://berlinonline.github.io/jinjardf/example/> a <#Thing> .
+# this should be rendered at  /jinjardf/something.html
+<https://berlinonline.github.io/jinjardf/something> <#property> "hello" .

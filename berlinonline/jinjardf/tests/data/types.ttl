@@ -1,0 +1,22 @@
+@prefix bo: <https://berlinonline.github.io/> .
+@prefix test: <https://berlinonline.github.io/test#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<#foo> a test:Thing_x . # should both not be included (if we restrict resources to bo:)
+
+bo: a test:Thing .
+
+bo:one a test:Thing_1 .
+
+bo:two a test:Thing_1 .
+bo:two a test:Thing_2 .
+
+bo:three test:property "hello" .
+
+bo:four a test:Thing_6 .
+
+test:Thing_1 rdfs:subClassOf test:Thing_3 .
+test:Thing_3 rdfs:subClassOf test:Thing_4 .
+test:Thing_4 rdfs:subClassOf test:Thing_5 .
+
+test:Thing_2 rdfs:subClassOf test:Thing_5 .

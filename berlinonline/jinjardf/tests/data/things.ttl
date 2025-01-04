@@ -1,0 +1,144 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix example: <https://berlinonline.github.io/jinja-rdf/example/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix things: <https://berlinonline.github.io/jinja-rdf/example/things/> .
+@prefix upper: <https://berlinonline.github.io/jinja-rdf/example/class_hierarchy/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Dataset
+
+example:
+    a void:Dataset ;
+    dct:title "Example World Data"@en ;
+    dct:title "Beispiel Daten"@de ;
+    dct:description """Example RDF data for various things in the world, as instances of a hierarchy
+    of classes in a fragementary upper ontology."""@en ;
+    dct:created "2024-12-17"^^xsd:date ;
+    dct:modified "2024-12-17"^^xsd:date ;
+    dct:license <https://creativecommons.org/publicdomain/zero/1.0/> ;
+    foaf:homepage <https://github.com/berlinonline/jinja-rdf> ;
+    void:dataDump <https://raw.githubusercontent.com/berlinonline/jinja-rdf/main/berlinonline/jinjardf/tests/data/things.ttl> ;
+    void:feature <http://www.w3.org/ns/formats/Turtle> ;
+    void:exampleResource example:Fido ;
+    void:exampleResource upper:LivingThing ;
+.
+
+# Classes
+
+upper:Thing
+    a rdfs:Class ; 
+    rdfs:label "Thing"@en ;
+.
+
+upper:Tangible
+    a rdfs:Class ;
+    rdfs:label "Tangible"@en ;
+    rdfs:subClassOf upper:Thing ;
+.
+
+upper:LivingThing
+    a rdfs:Class ;
+    rdfs:label "Living Thing"@en ;
+    rdfs:subClassOf upper:Tangible ;
+.
+
+upper:Animal
+    a rdfs:Class ;
+    rdfs:label "Animal"@en ;
+    rdfs:subClassOf upper:LivingThing ;
+.
+
+upper:Mammal
+    a rdfs:Class ;
+    rdfs:label "Mammal"@en ;
+    rdfs:subClassOf upper:Animal ;
+.
+
+upper:Dog
+    a rdfs:Class ;
+    rdfs:label "Dog"@en ;
+    rdfs:subClassOf upper:Mammal ;
+.
+
+upper:Human
+    a rdfs:Class ;
+    rdfs:label "Human"@en ;
+    rdfs:subClassOf upper:Mammal ;
+.
+
+upper:Plant
+    a rdfs:Class ;
+    rdfs:label "Plant"@en ;
+    rdfs:subClassOf upper:LivingThing ;
+.
+
+upper:Tree
+    a rdfs:Class ;
+    rdfs:label "Tree"@en ;
+    rdfs:subClassOf upper:Plant ;
+.
+
+upper:Flower
+    a rdfs:Class ;
+    rdfs:label "Flower"@en ;
+    rdfs:subClassOf upper:Plant ;
+.
+
+upper:Fungus
+    a rdfs:Class ;
+    rdfs:label "Fungus"@en ;
+    rdfs:subClassOf upper:LivingThing ;
+.
+
+upper:Intangible
+    a rdfs:Class ;
+    rdfs:label "Intangible"@en ;
+    rdfs:subClassOf upper:Thing ;
+.
+
+upper:Feeling
+    a rdfs:Class ;
+    rdfs:label "Feeling"@en ;
+    rdfs:subClassOf upper:Intangible ;
+.
+
+upper:Event
+    a rdfs:Class ;
+    rdfs:label "Event"@en ;
+    rdfs:subClassOf upper:Intangible ;
+.
+
+# Instances
+
+things:fido
+    a upper:Dog ;
+    rdfs:label "Fido"@en ;
+    rdfs:label "Fido"@de ;
+    rdfs:comment "Our dog Fido."@en ;
+.
+
+things:unidentifiedAnimal
+    a upper:Animal ;
+    rdfs:label "Unidentified Animal 2023"@en ;
+    rdfs:label "Unidentifiziertes Tier 2023"@de ;
+    rdfs:comment """An as of yet unidentified animal was sighted in Berlin in 2023.
+    Is it a lion? Is it a boar? Something completely different? We just don't
+    know yet."""@en ;
+.
+
+things:love
+    a upper:Feeling ;
+    rdfs:label "Love"@en ;
+    rdfs:label "Liebe"@de ;
+    rdfs:comment "The feeling of love"@en;
+.
+
+things:boddy2024
+    a upper:Event ;
+    rdfs:label "BODDy 2024"@en ;
+    rdfs:label "BODDy 2024"@de ;
+    rdfs:label "BODDy 2024" ;
+    rdfs:comment "The Berlin Open Data Day 2024"@en ;
+.

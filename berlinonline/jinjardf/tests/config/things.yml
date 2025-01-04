@@ -1,0 +1,9 @@
+base_url: 'https://berlinonline.github.io'
+base_path: '/jinja-rdf/example' # the subpath of your site, e.g. /blog
+dataset_path: 'data/things.ttl'
+class_template_mappings:
+  "void:Dataset": "dataset.html.jinja"
+  "upper:Dog": "dog.html.jinja"
+  "upper:Animal": "animal.html.jinja"
+  "upper:Event": "event.html.jinja"
+
