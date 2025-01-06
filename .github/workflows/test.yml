@@ -18,8 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install CURL
-        run: apt install curl -y
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
