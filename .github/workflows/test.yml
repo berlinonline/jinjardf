@@ -34,7 +34,4 @@ jobs:
         run: |
           pytest --cov=berlinonline.jinjardf --cov-report=xml --cov-append --disable-warnings berlinonline/jinjardf/tests
       - name: Upload coverage reports to Codecov
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov
+        uses: codecov/codecov-action@v5
