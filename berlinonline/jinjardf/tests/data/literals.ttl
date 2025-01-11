@@ -29,3 +29,6 @@ literals:something_3
     ;
 .
 
+literals:something_no_title
+    a literals:Thing ;
+.

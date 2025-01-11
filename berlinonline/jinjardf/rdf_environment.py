@@ -8,8 +8,14 @@ class RDFEnvironment(Environment):
     RDF data. Keeps a reference to the RDF graph which contains the
     data.
     """
-    def __init__(self, dataset: str, **kwargs):
+    resource_prefix: str
+    site_url: str
+    graph: Graph
+
+    def __init__(self, dataset: str, resource_prefix: str, site_url: str, **kwargs):
         super().__init__(**kwargs)
         self.graph = Graph()
         if (dataset):
             self.graph.parse(dataset)
+        self.resource_prefix = resource_prefix
+        self.site_url = site_url

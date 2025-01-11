@@ -1,4 +1,4 @@
-import http.server
+from  http.server import SimpleHTTPRequestHandler
 import logging
 import os
 import shutil
@@ -40,7 +40,7 @@ DEFAULT_OUTPUT_PATH = 'output'
 def generate_output_path_from_resource(resource: URIRef, resource_prefix: str, output_path: str) -> str:
     path = resource.split(resource_prefix).pop()
     local_name = resource.split('/').pop()
-    LOG.info(f" local_name: {local_name}")
+    LOG.debug(f" local_name: {local_name}")
     if not local_name:
         local_name = "index"
     else:
@@ -48,14 +48,36 @@ def generate_output_path_from_resource(resource: URIRef, resource_prefix: str, o
     output_path = os.path.join(output_path, path, local_name) + '.html'
     return output_path
 
+def copy_includes(includes, output_path):
+    import errno
+
+    def copyanything(src, dst):
+        try:
+            shutil.copytree(src, dst)
+        except OSError as exc: # python >2.5
+            if exc.errno in (errno.ENOTDIR, errno.EINVAL):
+                shutil.copy(src, dst)
+            else:
+                raise
+
+    for include in includes:
+        destination = os.path.join(output_path, include)
+        LOG.info(f" copying {include} to {destination}")
+        copyanything(include, destination)
+
+
+
 class SiteGenerator(object):
+    base_url: str
     base_path: str
     resource_prefix: str
+    site_url: str
     prefixes: dict
     sparql_prefixes: str
     template_prefixes: dict
     restriction_query: str
     output_path: str
+    include: list
     default_template: str
     class_template_mapping: dict
     resource_template_index: dict
@@ -79,8 +101,8 @@ class SiteGenerator(object):
         LOG.info(f" reading base_url: '{self.base_url}' ...")
 
         self.base_path = self.read_config('base_path', DEFAULT_BASEPATH)
-
         self.resource_prefix = urljoin(self.base_url, os.path.join(self.base_path, ''))
+        self.site_url = self.read_config('site_url', self.base_url)
 
         self.prefixes = self.read_config('prefixes', DEFAULT_PREFIXES)
         self.sparql_prefixes = self.prefix_dict_to_sparql(self.prefixes)
@@ -99,8 +121,16 @@ class SiteGenerator(object):
         loader = FileSystemLoader(template_path)
 
         self.output_path = self.read_config('output_path', DEFAULT_OUTPUT_PATH)
+        self.include = self.read_config('include', [])
 
-        self.environment = RDFEnvironment(dataset=dataset_path, extensions=[RDFFilters], loader=loader)
+        self.environment = RDFEnvironment(dataset=dataset_path, resource_prefix=self.resource_prefix, site_url=self.site_url, extensions=[RDFFilters], loader=loader)
+
+        self.template_arguments = {
+            'base_url': self.base_url,
+            'base_path': self.base_path,
+            'resource_prefix': self.resource_prefix,
+            'prefixes': self.prefixes
+        }
 
     def read_config(self, config_key: str, default):
         """Read a value from the config and return it. If config_key is not included,
@@ -126,9 +156,10 @@ class SiteGenerator(object):
         """
         results = self.environment.graph.query(self.restriction_query)
         resources = set()
+        LOG.info(" extracting resources")
         for result in results:
             resources.add(result['resourceUri'])
-        LOG.info(f" got resources for generator: {sorted(resources)}")
+        LOG.debug(f" got resources for generator: {sorted(resources)}")
         return resources
 
     def expand_class_template_mappings(self, class_template_mappings: dict) -> Dict[URIRef, str]:
@@ -146,8 +177,9 @@ class SiteGenerator(object):
             shutil.rmtree(self.output_path)
 
     def generate_site(self, resources: list):
-        prefixes = self.template_prefixes
+        arguments = self.template_arguments | self.template_prefixes
         os.makedirs(self.output_path, exist_ok=True)
+        copy_includes(self.include, self.output_path)
         resource_class_index = self.compute_resource_class_index(resources)
         class_superclass_index = self.compute_class_superclass_index(resource_class_index)
         self.resource_template_index = self.compute_resource_template_index(resources, resource_class_index, class_superclass_index)
@@ -155,17 +187,16 @@ class SiteGenerator(object):
         for resource, template_name in self.resource_template_index.items():
             LOG.info(f" rendering {resource} with template {template_name} ...")
             template = self.environment.get_template(template_name)
-            rendered = template.render(node=resource, **prefixes)
+            rendered = template.render(node=resource, **arguments)
             output_path = generate_output_path_from_resource(resource, self.resource_prefix, self.output_path)
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            LOG.info(f" writing to {output_path} ...")
+            LOG.debug(f" writing to {output_path} ...")
             with open(output_path, "w") as file:
                 file.write(rendered)
     
     def serve_site(self, port: int=8000): # pragma: no cover
         os.chdir(self.output_path)
-        Handler = http.server.SimpleHTTPRequestHandler
-        with socketserver.TCPServer(("", port), Handler) as httpd:
+        with socketserver.TCPServer(("", port), CustomHandler) as httpd:
             print(f"Serving {self.output_path} at http://localhost:{port}")
             try:
                 httpd.serve_forever()
@@ -193,13 +224,13 @@ class SiteGenerator(object):
             dict: A dict from resource URIs to class URIs, or None if no class is defined.
         """
         resource_class_index = {}
-        LOG.info("determining resource_class_index ...")
+        LOG.debug("determining resource_class_index ...")
         for resource in resources:
             resource_class_index[resource] = []
         for resourceUri, p, classUri in self.environment.graph.triples( ( None, RDF.type, None ) ): 
             if resourceUri in resources:
                 resource_class_index[resourceUri].append(classUri)
-        LOG.info(f" resource_class_index: {resource_class_index}")
+        LOG.debug(f" resource_class_index: {resource_class_index}")
         return resource_class_index
     
     def compute_class_superclass_index(self, resource_class_index: dict) -> Dict[URIRef, list]:
@@ -219,7 +250,7 @@ class SiteGenerator(object):
         """
 
         class_superclass_index = {}
-        LOG.info("determining class_superclass_index ...")
+        LOG.debug("determining class_superclass_index ...")
         allClassUris = set([classUri 
                          for classUris in resource_class_index.values()
                          for classUri in classUris ])
@@ -233,7 +264,7 @@ class SiteGenerator(object):
                 superclasses.append(OWL.Thing)
             superclasses.reverse() # we want from least to most specific
             class_superclass_index[classUri] = superclasses
-        LOG.info(f" class_superclass_index: {class_superclass_index}")
+        LOG.debug(f" class_superclass_index: {class_superclass_index}")
         return class_superclass_index
 
     def compute_resource_template_index(self, resources: list, resource_class_index: dict, class_superclass_index: dict) -> Dict[URIRef, str]:
@@ -247,7 +278,7 @@ class SiteGenerator(object):
         Returns:
             Dict[URIRef, str]: The index from resource URIs to template names.
         """
-        LOG.info("determining resource_template_index ...")
+        LOG.debug("determining resource_template_index ...")
         mapping_classes = self.class_template_mapping.keys()
         resource_template_index = {}
         # the following only covers resources which have a type
@@ -263,8 +294,22 @@ class SiteGenerator(object):
                        if resource_class_index[resource] == []}
         # merge both mappings
         resource_template_index = not_covered | resource_template_index
-        LOG.info(f" resource_template_index: {resource_template_index}")
+        LOG.debug(f" resource_template_index: {resource_template_index}")
         return resource_template_index
 
 class ConfigException(Exception):
     pass
+
+class CustomHandler(SimpleHTTPRequestHandler): # pragma: no cover
+    """A custom request handler that can serve *.html files without their file extension.
+    I.e., I can request `xxxxx` and get `xxxxx.html`.
+    """
+    def do_GET(self):
+        # Check if the request is for a file without extension
+        if self.path == '/':
+            self.path == 'index.html'
+        elif not os.path.splitext(self.path)[1]:  # No extension in the requested path
+            self.path += ".html"  # Append .html extension
+            
+        # Call the parent handler to serve the file
+        super().do_GET()

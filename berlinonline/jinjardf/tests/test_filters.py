@@ -1,10 +1,11 @@
 from types import NoneType
 from typing import Generator
 import pytest
-from rdflib import RDF, Literal, URIRef
+from rdflib import RDF, BNode, Literal, URIRef
 from rdflib.namespace import DCTERMS
 from rdflib.term import Identifier
 
+from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 from berlinonline.jinjardf.rdf_filters import UNTAGGED, RDFFilters
 from berlinonline.jinjardf.tests import (
     DUCKS,
@@ -18,14 +19,84 @@ from berlinonline.jinjardf.tests import (
 class TestRDFget(object):
 
     def test_returns_resource_with_correct_uri_for_string(self):
-        uri = 'http://schema.org/Person'
+        uri = 'https://schema.org/Person'
         resource = RDFFilters.rdf_get(uri)
         assert resource.toPython() == uri 
 
     def test_returns_resource_for_resource(self):
-        uri = 'http://schema.org/Person'
+        uri = 'https://schema.org/Person'
         resource = URIRef(uri)
         assert RDFFilters.rdf_get(resource) == resource
+
+class TestTypeCheckers(object):
+
+    @pytest.mark.parametrize('data', [
+        {
+            'node': Literal("hello"),
+            'expected': False,
+        },
+        {
+            'node': BNode(),
+            'expected': False,
+        },
+        {
+            'node': URIRef('http://example.com/foo/bar'),
+            'expected': True,
+        },
+    ])
+    def test_is_iri(self, data):
+        assert RDFFilters.is_iri(data['node']) == data['expected']
+
+    @pytest.mark.parametrize('data', [
+        {
+            'node': Literal("hello"),
+            'expected': False,
+        },
+        {
+            'node': BNode(),
+            'expected': True,
+        },
+        {
+            'node': URIRef('http://example.com/foo/bar'),
+            'expected': False,
+        },
+    ])
+    def test_is_bnode(self, data):
+        assert RDFFilters.is_bnode(data['node']) == data['expected']
+
+    @pytest.mark.parametrize('data', [
+        {
+            'node': Literal("hello"),
+            'expected': False,
+        },
+        {
+            'node': BNode(),
+            'expected': True,
+        },
+        {
+            'node': URIRef('http://example.com/foo/bar'),
+            'expected': True,
+        },
+    ])
+    def test_is_resource(self, data):
+        assert RDFFilters.is_resource(data['node']) == data['expected']
+
+    @pytest.mark.parametrize('data', [
+        {
+            'node': Literal("hello"),
+            'expected': True,
+        },
+        {
+            'node': BNode(),
+            'expected': False,
+        },
+        {
+            'node': URIRef('http://example.com/foo/bar'),
+            'expected': False,
+        },
+    ])
+    def test_is_literal(self, data):
+        assert RDFFilters.is_literal(data['node']) == data['expected']
 
 class TestRDFProperty(object):
 
@@ -91,7 +162,7 @@ class TestSPARQLQuery(object):
 
     def test_resource_uri_replaced_correctly(self, duck_environment):
         query = """
-            PREFIX schema: <http://schema.org/>
+            PREFIX schema: <https://schema.org/>
             PREFIX family: <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/>
             SELECT ?mother
             WHERE { 
@@ -128,6 +199,11 @@ class TestTitle(object):
         assert isinstance(titles, list)
         assert titles == data['expected']
 
+    def test_title_returns_default(self, literal_environment):
+        default_title = Literal('(no title)')
+        titles = RDFFilters.title(literal_environment, LITERALS.something_no_title, languages=['de'], default=default_title)
+        assert titles == [ default_title ]
+
     @pytest.mark.parametrize("data", [
         {
             'resourceUri': LITERALS.something,
@@ -158,10 +234,16 @@ class TestTitle(object):
             'comment': "no choice exists and no untagged exists, so return None"
         },
     ])
-    def test_title_any_returns_literal(self, literal_environment, data):
+    def test_title_any_returns_literal(self, literal_environment: RDFEnvironment, data: list):
         title = RDFFilters.title_any(literal_environment, data['resourceUri'], languages=data['languages'])
         assert isinstance(title, data['resultType'])
         assert title == data['expected']
+
+    def test_title_any_returns_default(self, literal_environment):
+        default_title = Literal('(no title)')
+        titles = RDFFilters.title_any(literal_environment, LITERALS.something_no_title, languages=['de'], default=default_title)
+        assert titles == default_title
+
 
 class TestStatementsAsSubject(object):
 
@@ -175,3 +257,46 @@ class TestStatementsAsSubject(object):
             assert isinstance(p, URIRef)
             assert isinstance(o, Identifier)
         assert count == 9
+
+class TestRelativeURI(object):
+
+    @pytest.mark.parametrize('data', [
+        {
+            'resourceUri': LITERALS.something,
+            'site_url': 'https://berlinonline.github.io/jinja-rdf/example/literals',
+            'expected': '/jinja-rdf/example/literals/something'
+        },
+        {
+            'resourceUri': LITERALS.something,
+            'site_url': 'http://localhost:8000',
+            'expected': '/something'
+        },
+        {
+            'resourceUri': SCHEMA.Person,
+            'site_url': 'https://berlinonline.github.io/jinja-rdf/example/literals',
+            'expected': str(SCHEMA.Person)
+        },
+        {
+            'resourceUri': 'https://berlinonline.github.io/jinja-rdf/example/literals/foo/bar',
+            'site_url': 'https://berlinonline.github.io/jinja-rdf/example/literals',
+            'expected': '/jinja-rdf/example/literals/foo/bar'
+        },
+        {
+            'resourceUri': 'https://berlinonline.github.io/jinja-rdf/example/literals/foo/bar',
+            'site_url': 'http://localhost:8000',
+            'expected': '/foo/bar'
+        },
+        {
+            'resourceUri': 'https://berlinonline.github.io/jinja-rdf/example/literals/assets/css/style.css',
+            'site_url': 'https://berlinonline.github.io/jinja-rdf/example/literals',
+            'expected': '/jinja-rdf/example/literals/assets/css/style.css'
+        },
+        {
+            'resourceUri': 'https://berlinonline.github.io/jinja-rdf/example/literals/assets/css/style.css',
+            'site_url': 'http://localhost:8000',
+            'expected': '/assets/css/style.css'
+        },
+    ])
+    def test_relative_uri_generated_correctly(self, literal_environment: RDFEnvironment, data: list):
+        literal_environment.site_url = data['site_url']
+        assert RDFFilters.relative_uri(literal_environment, data['resourceUri']) == data['expected']
