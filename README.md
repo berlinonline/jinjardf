@@ -6,7 +6,7 @@
 Jinja-RDF provides the tools necessary to build static sites for RDF graphs:
 
 * several [custom filters](https://jinja.palletsprojects.com/en/stable/api/#custom-filters) for [Jinja](https://jinja.palletsprojects.com) for working with RDF data
-* a custom Jinja environment that keeps a refernce to an RDF graph
+* a custom Jinja environment that keeps a reference to an RDF graph
 * a site generator class that …
   * reads and interprets the configuration,
   * iterates through a configurable part of the RDF graph,
@@ -48,6 +48,8 @@ While your dataset is effectively adding information to these URIs, you cannot *
 * [Jinja](https://jinja.palletsprojects.com) (`jinja2`) is used as the templating language.
 * [RDFLib](https://rdflib.readthedocs.io) (`rdflib`) is used for RDF loading, querying and graph traversal. 
 * [PyYAML](https://pyyaml.org/wiki/PyYAML) (`pyyaml`) is used for parsing configuration.
+
+For a complete list of Python dependencies see [requirements.txt](requirements.txt).
 
 ## Installation
 

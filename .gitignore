@@ -3,3 +3,7 @@ output
 _site
 queries
 __pycache__
+.DS_Store
+.coverage
+.vscode/
+jinja_rdf.egg-info/
