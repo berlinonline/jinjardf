@@ -45,6 +45,7 @@ class RDFFilters(Extension):
         environment.filters['is_resource'] = self.is_resource
         environment.filters['is_literal'] = self.is_literal
         environment.filters['rdf_property'] = self.rdf_property
+        environment.filters['rdf_property_any'] = self.rdf_property_any
         environment.filters['rdf_inverse_property'] = self.rdf_inverse_property
         environment.filters['sparql_query'] = self.sparql_query
         environment.filters['statements_as_subject'] = self.statements_as_subject
