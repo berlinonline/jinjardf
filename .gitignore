@@ -1,4 +1,5 @@
 venv
 output
+_site
 queries
 __pycache__

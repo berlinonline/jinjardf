@@ -15,6 +15,9 @@ from berlinonline.jinjardf.helper import replace_curies, split_curie
 from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 from berlinonline.jinjardf.rdf_filters import RDFFilters
 
+import progressbar
+
+progressbar.streams.wrap_stderr()
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
@@ -187,15 +190,19 @@ class SiteGenerator(object):
         class_superclass_index = self.compute_class_superclass_index(resource_class_index)
         self.resource_template_index = self.compute_resource_template_index(resources, resource_class_index, class_superclass_index)
 
-        for resource, template_name in self.resource_template_index.items():
-            LOG.info(f" rendering {resource} with template {template_name} ...")
-            template = self.environment.get_template(template_name)
-            rendered = template.render(node=resource, **arguments)
-            output_path = generate_output_path_from_resource(resource, self.resource_prefix, self.output_path)
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            LOG.debug(f" writing to {output_path} ...")
-            with open(output_path, "w") as file:
-                file.write(rendered)
+        with progressbar.ProgressBar(max_value=len(self.resource_template_index)) as bar:
+            progress_counter = 0
+            for resource, template_name in self.resource_template_index.items():
+                LOG.debug(f" rendering {resource} with template {template_name} ...")
+                template = self.environment.get_template(template_name)
+                rendered = template.render(node=resource, **arguments)
+                output_path = generate_output_path_from_resource(resource, self.resource_prefix, self.output_path)
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                LOG.debug(f" writing to {output_path} ...")
+                with open(output_path, "w") as file:
+                    file.write(rendered)
+                bar.update(progress_counter)
+                progress_counter += 1
     
     def serve_site(self, port: int=8000): # pragma: no cover
         os.chdir(self.output_path)
