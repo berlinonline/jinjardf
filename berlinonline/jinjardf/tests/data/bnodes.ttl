@@ -1,0 +1,11 @@
+@prefix bnodes: <https://berlinonline.github.io/jinja-rdf/example/bnodes/> .
+
+bnodes:something
+    bnodes:link bnodes:something_else ;
+    bnodes:link_2 [
+        bnodes:link_3 "hello" ;
+        bnodes:link_4 [
+            bnodes:link_3 "world" ;
+        ]
+    ] ;
+.

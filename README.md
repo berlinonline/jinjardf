@@ -73,3 +73,7 @@ Jinja-RDF is inspired by [Jekyll-RDF](https://github.com/AKSW/jekyll-rdf), an ex
 Jekyll is a Ruby application, and so Jekyll-RDF uses [Ruby-RDF](https://github.com/ruby-rdf).
 Ruby-RDF is great, but I had some issues loading largish datasets with it.
 Also, I find the Jinja2 templating language more convenient than Liquid, that Jekyll uses.
+
+## License
+
+All code in this repository is published under the [MIT License](License).
