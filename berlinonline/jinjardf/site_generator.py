@@ -120,7 +120,7 @@ class SiteGenerator(object):
         template_path = self.read_config('template_path', DEFAULT_TEMPLATE_PATH)
         self.default_template = self.read_config('default_template', DEFAULT_TEMPLATE)
         
-        class_template_mappings = self.config.get('class_template_mappings', {})
+        class_template_mappings = self.read_config('class_template_mappings', {})
         self.class_template_mapping = {}
         self.expand_class_template_mappings(class_template_mappings)
         
