@@ -15,6 +15,7 @@ LOG = logging.getLogger(__name__)
 DCT = Namespace('http://purl.org/dc/terms/')
 FOAF = Namespace('http://xmlns.com/foaf/0.1/')
 SCHEMA = Namespace('https://schema.org/')
+SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
 UNTAGGED = 'untagged'
 
 DEFAULT_TITLE_PROPERTIES = [
@@ -22,6 +23,7 @@ DEFAULT_TITLE_PROPERTIES = [
     DCT.title,
     FOAF.name,
     SCHEMA.name,
+    SKOS.prefLabel,
 ]
 DEFAULT_DESCRIPTION_PROPERTIES = [
     RDFS.comment,
