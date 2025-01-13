@@ -83,7 +83,7 @@ class SiteGenerator(object):
     resource_template_index: dict
     environment: RDFEnvironment
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str, cli_site_url: str=None):
 
         if not os.path.isfile(config_path):
             raise ConfigException(f" no file found at {config_path}")
@@ -103,6 +103,9 @@ class SiteGenerator(object):
         self.base_path = self.read_config('base_path', DEFAULT_BASEPATH)
         self.resource_prefix = urljoin(self.base_url, os.path.join(self.base_path, ''))
         self.site_url = self.read_config('site_url', self.base_url)
+        if cli_site_url:
+            LOG.info(f" current site_url ({self.site_url}) is overridden by the command line parameter: {cli_site_url}")
+            self.site_url = cli_site_url
 
         self.prefixes = self.read_config('prefixes', DEFAULT_PREFIXES)
         self.sparql_prefixes = self.prefix_dict_to_sparql(self.prefixes)
