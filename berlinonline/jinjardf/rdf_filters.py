@@ -59,6 +59,7 @@ class RDFFilters(Extension):
         super().__init__(environment)
 
         environment.filters['rdf_get'] = self.rdf_property
+        environment.filters['toPython'] = self.toPython
         environment.filters['is_iri'] = self.is_iri
         environment.filters['is_bnode'] = self.is_bnode
         environment.filters['is_resource'] = self.is_resource
@@ -95,6 +96,19 @@ class RDFFilters(Extension):
         """
 
         return URIRef(iri)
+
+    @staticmethod
+    def toPython(node: Node):
+        """Returns an appropriate python datatype for the rdflib type of `node`.
+
+        Args:
+            node (Node): the node to convert
+
+        Returns:
+            _type_: an appropriate python representation of `node` (str, int, boolean etc.)
+        """
+
+        return node.toPython()
 
     @staticmethod
     def is_iri(node: Node) -> bool:

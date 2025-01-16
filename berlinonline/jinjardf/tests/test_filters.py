@@ -28,6 +28,35 @@ class TestRDFget(object):
         resource = URIRef(uri)
         assert RDFFilters.rdf_get(resource) == resource
 
+class TestToPython(object):
+
+    @pytest.mark.parametrize('data', [
+        {
+            'node': Literal("hello"),
+            'expected': 'hello',
+            'type': str
+        },
+        {
+            'node': Literal(42),
+            'expected': 42,
+            'type': int
+        },
+        {
+            'node': Literal(True),
+            'expected': True,
+            'type': bool
+        },
+        {
+            'node': URIRef('https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck'),
+            'expected': 'https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck',
+            'type': str
+        }
+    ])
+    def test_return_value_has_correct_type(self, data):
+        value = RDFFilters.toPython(data['node'])
+        assert value == data['expected']
+        assert isinstance(value, data['type'])
+
 class TestTypeCheckers(object):
 
     @pytest.mark.parametrize('data', [
