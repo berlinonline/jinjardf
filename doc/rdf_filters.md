@@ -54,10 +54,12 @@ When used as a Jinja filter, the value passed is the `iri`.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set iri = 'https://example.com/foo/bar' %}
 {{ iri | rdf_get }}
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -82,6 +84,7 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_iri %}
@@ -90,6 +93,7 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 ------
 https://example.com/foo/bar is an IRI.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -114,6 +118,7 @@ Return `True` if `node` is a blank node resource, `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_bnode %}
@@ -124,6 +129,7 @@ Return `True` if `node` is a blank node resource, `False` if not.
 ------
 https://example.com/foo/bar is not a Bnode.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -148,6 +154,7 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_resource %}
@@ -156,6 +163,7 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 ------
 https://example.com/foo/bar is a resource.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -180,6 +188,7 @@ Return `True` if `node` is a literal, `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set title = node | title_any %}
 {% if title | is_literal %}
@@ -188,6 +197,7 @@ Return `True` if `node` is a literal, `False` if not.
 ------
 'Hello World' is a literal.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -220,9 +230,11 @@ When used as a Jinja filter, the value passed is the `subject`.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
+{% endraw %}
 
 **Arguments**:
 
