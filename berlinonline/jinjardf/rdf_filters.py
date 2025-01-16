@@ -25,11 +25,28 @@ DEFAULT_TITLE_PROPERTIES = [
     SCHEMA.name,
     SKOS.prefLabel,
 ]
+"""A list of properties that all mean something like 'title' and are used by
+the `title()` and `title_any()` filters. The properties are:
+
+* `rdfs:label`
+* `dct:title`
+* `foaf:name`
+* `schema:name`
+* `skos:prefLabel`
+"""
+
 DEFAULT_DESCRIPTION_PROPERTIES = [
     RDFS.comment,
     DCT.description,
     SCHEMA.description
 ]
+"""A list of properties that all mean something like 'description' and are used by
+the `description()` and `description_any()` filters. The properties are:
+
+* `rdfs:comment`
+* `dct:description`
+* `schema:description`
+"""
 
 class RDFFilters(Extension):
     """Implementation of a Jinja2 extension that provides various filters for
@@ -63,6 +80,13 @@ class RDFFilters(Extension):
         """Return an rdflib URIRef with the IRI that was passed as the value.
         When used as a Jinja filter, the value passed is the `iri`.
 
+        **Usage in a template**:
+
+        ```jinja
+        {% set iri = 'https://example.com/foo/bar' %}
+        {{ iri | rdf_get }}
+        ```
+
         Args:
             iri (str): The IRI of the resource.
 
@@ -74,37 +98,121 @@ class RDFFilters(Extension):
 
     @staticmethod
     def is_iri(node: Node) -> bool:
+        """Return `True` if `node` is an IRI (URI) resource, `False` if not.
+
+        **Usage in a template**:
+
+        ```jinja
+        {% set node = 'https://example.com/foo/bar' | rdf_get %}
+        {% if node | is_iri %}
+            {{ node }} is an IRI.
+        {% endif %}
+        ------
+        https://example.com/foo/bar is an IRI.
+        ```
+
+        Args:
+            node (Node): the node to test
+
+        Returns:
+            bool: `True` is `node` is an IRI, `False` if not.
+        """
         return isinstance(node, URIRef)
 
     @staticmethod
     def is_bnode(node: Node) -> bool:
+        """Return `True` if `node` is a blank node resource, `False` if not.
+
+        **Usage in a template**:
+
+        ```jinja
+        {% set node = 'https://example.com/foo/bar' | rdf_get %}
+        {% if node | is_bnode %}
+            {{ node }} is a Bnode.
+        {% else %}
+            {{ node }} is not a Bnode.
+        {% endif %}
+        ------
+        https://example.com/foo/bar is not a Bnode.
+        ```
+
+        Args:
+            node (Node): the node to test
+
+        Returns:
+            bool: `True` is `node` is a bnode, `False` if not.
+        """
         return isinstance(node, BNode)
 
     @staticmethod
     def is_resource(node: Node) -> bool:
+        """Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
+
+        **Usage in a template**:
+
+        ```jinja
+        {% set node = 'https://example.com/foo/bar' | rdf_get %}
+        {% if node | is_resource %}
+            {{ node }} is a resource.
+        {% endif %}
+        ------
+        https://example.com/foo/bar is a resource.
+        ```
+
+        Args:
+            node (Node): the node to test
+
+        Returns:
+            bool: `True` is `node` is a resource, `False` if not.
+        """
         return isinstance(node, IdentifiedNode)
 
     @staticmethod
     def is_literal(node: Node) -> bool:
+        """Return `True` if `node` is a literal, `False` if not.
+
+        **Usage in a template**:
+
+        ```jinja
+        {% set title = node | title_any %}
+        {% if title | is_literal %}
+            '{{ title }}' is a literal.
+        {% endif %}
+        ------
+        'Hello World' is a literal.
+        ```
+
+        Args:
+            node (Node): the node to test
+
+        Returns:
+            bool: `True` is `node` is a literal, `False` if not.
+        """
         return isinstance(node, Literal)
 
     @staticmethod
     @pass_environment
     def rdf_property(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str=None, unique: bool=False) -> List[Identifier]:
-        """Return one or all of the objects for the pattern (`subject`, `predicate`, `OBJ`).
+        """Return the objects for the pattern (`subject`, `predicate`, `OBJ`).
         If an optional language code is provided, the results will be filtered to only
         contain literals with that language.
         When used as a Jinja filter, the value passed is the `subject`.
+
+        **Usage in a template**:
+
+        ```jinja
+        {{ node | rdf_property(RDFS.label, 'en', true) }}
+        ```
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
             subject (IdentifiedNode): the subject resource
             predicate (str): URI of the property
-            language (str, optional): language code like `en` or `fr`. Defaults to None.
-            unique (bool, optional): Set to True if only unique results should be returned. Defaults to False.
+            language (str, optional): language code like `en` or `fr`. Defaults to `None`.
+            unique (bool, optional): Set to `True` if only unique results should be returned. Defaults to `False`.
 
         Returns:
-            List[rdflib.term.Identifier]: a list of nodes (URIRef, Literal or BNode)
+            List[rdflib.term.Identifier]: a list of nodes (`URIRef`, `Literal` or `BNode`)
         """
         
         graph = environment.graph
@@ -127,32 +235,60 @@ class RDFFilters(Extension):
     
     @staticmethod
     @pass_environment
-    def rdf_property_any(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str = None) -> Literal:
+    def rdf_property_any(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str = None) -> Identifier:
+        """Return one arbitrary object for the pattern (`subject`, `predicate`, `OBJ`).
+        If an optional language code is provided, only a literal with that language will
+        be returned.
+        When used as a Jinja filter, the value passed is the `subject`.
+
+        Args:
+            environment (RDFEnvironment): the RDFEnvironment
+            subject (IdentifiedNode): the subject resource
+            predicate (str): URI of the property
+            language (str, optional): language code like `en` or `fr`. Defaults to `None`.
+
+        Returns:
+            Identifier: a `URIRef`, `Literal` or `BNode`
+        """
         objects = RDFFilters.rdf_property(environment, subject, predicate, language)
         return objects.pop() if len(objects) > 0 else None
 
     @staticmethod
     @pass_environment
-    def rdf_inverse_property(environment: RDFEnvironment, object: IdentifiedNode, predicate: str, as_list: bool=False, unique: bool=False) -> List[IdentifiedNode]:
-        """Return one or all of the subjects for the pattern (`SUBJ`, `predicate`, `object`).
+    def rdf_inverse_property(environment: RDFEnvironment, object: IdentifiedNode, predicate: str, unique: bool=False) -> List[IdentifiedNode]:
+        """Return the subjects for the pattern (`SUBJ`, `predicate`, `object`).
         When used as a Jinja filter, the value passed is the `object`.
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
             object (IdentifiedNode): The object resource.
             predicate (str): URI of the predicate
-            as_list (bool, optional): Set to True if multiple results should be returned. Defaults to False.
-            unique (bool, optional): Set to True if only unique results should be returned. Defaults to False.
+            unique (bool, optional): Set to `True` if only unique results should be returned. Defaults to `False`.
 
         Returns:
-             List[rdflib.IdentifiedNode]: a list of subject nodes (URIRef or BNode)
+             List[rdflib.IdentifiedNode]: a list of subject nodes (`URIRef` or `BNode`)
         """
         graph = environment.graph
         subjects = list(graph.subjects(predicate=URIRef(predicate), object=object, unique=unique))
-        if as_list:
-            return subjects
-        else:
-            return subjects.pop() if len(subjects) > 0 else None
+        return subjects
+
+    @staticmethod
+    @pass_environment
+    def rdf_inverse_property_any(environment: RDFEnvironment, object: IdentifiedNode, predicate: str) -> IdentifiedNode:
+        """Return one arbitrary subject for the pattern (`SUBJ`, `predicate`, `object`).
+        When used as a Jinja filter, the value passed is the `object`.
+
+        Args:
+            environment (RDFEnvironment): the RDFEnvironment
+            object (IdentifiedNode): the object resource
+            predicate (str): URI of the predicate
+
+        Returns:
+            IdentifiedNode: one instance of `IdentifiedNode`, either a `URIRef` or a `BNode`.
+        """
+        subjects = RDFFilters.rdf_inverse_property(environment, object, predicate)
+        return subjects.pop() if len(subjects) > 0 else None
+
 
     @staticmethod
     @pass_environment
@@ -173,7 +309,7 @@ class RDFFilters(Extension):
         """
 
         graph = environment.graph
-        query = query.replace("?resourceUri", f"<{resourceURI.toPython()}>")
+        query = query.replace("?resourceUri", f"<{resourceURI}>")
         result = graph.query(query)
         return result
 
@@ -220,15 +356,18 @@ class RDFFilters(Extension):
     @staticmethod
     @pass_environment
     def get_text(environment: RDFEnvironment, resource: IdentifiedNode, properties: list, languages: list=[], return_first: bool=False, default: str=None) -> List[Literal]:
-        """Find all literals connected to `resource` via any of the `properties`, for all `languages` and return them as a list,
+        """Find all literals connected to `resource` via any of the `properties`, for all `languages`
+        and return them as a list. This is e.g. used to get all titles, or all descriptions of a resource,
+        by passing a list of desired title-properties (`rdfs:label`, `dct:title`, `schema:name` etc.) or
+        description-properties (`rdfs:comment`, `dct:description`, `schema:description` etc.).
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
             resource (IdentifiedNode): the resource for which to find literals
             properties (list): the list of properties to use
-            languages (list, optional): list of language codes. Defaults to [].
-            return_first (bool, optional): If True, only return the first literal found. Defaults to False.
-            default (str, optional): If no matching literals are found, return this. Defaults to None.
+            languages (list, optional): list of language codes. Defaults to `[]`.
+            return_first (bool, optional): If `True`, only return the first literal found. Defaults to `False`.
+            default (str, optional): If no matching literals are found, return this. Defaults to `None`.
 
         Returns:
             List[Literal]: the list of literals found

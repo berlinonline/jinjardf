@@ -106,7 +106,6 @@ class TestRDFProperty(object):
         assert len(objects) == 4
         assert isinstance(objects[0], Identifier)
 
-
     def test_returns_correct_object_with_language_tag(self, literal_environment):
         objects = RDFFilters.rdf_property(literal_environment, subject=LITERALS.something, predicate=DCTERMS.title, language='en')
         assert isinstance(objects, list)
@@ -149,14 +148,21 @@ class TestRDFPropertyAny(object):
 
 class TestRDFInverseProperty(object):
 
-    def test_return_all_subjects_with_as_list(self, duck_environment):
-        subjects = RDFFilters.rdf_inverse_property(duck_environment, object=SCHEMA.Person, predicate=RDF.type, as_list=True)
+    def test_return_all_subjects(self, duck_environment):
+        subjects = RDFFilters.rdf_inverse_property(duck_environment, object=SCHEMA.Person, predicate=RDF.type)
         assert isinstance(subjects, list)
         assert len(subjects) == 12
 
-    def test_return_one_subject_without_as_list(self, duck_environment):
-        subject = RDFFilters.rdf_inverse_property(duck_environment, object=SCHEMA.Person, predicate=RDF.type)
+class TestRDFInversePropertyAny(object):
+
+    def test_return_one_subject(self, duck_environment):
+        subject = RDFFilters.rdf_inverse_property_any(duck_environment, object=SCHEMA.Person, predicate=RDF.type)
         assert isinstance(subject, URIRef)
+
+    def test_return_none(self, duck_environment):
+        subject = RDFFilters.rdf_inverse_property_any(duck_environment, object=SCHEMA.Person, predicate=DUCKS.imagined_property)
+        assert subject is None
+
 
 class TestSPARQLQuery(object):
 
