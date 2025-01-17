@@ -99,7 +99,8 @@ class RDFFilters(Extension):
 
     @staticmethod
     def toPython(node: Node):
-        """Returns an appropriate python datatype for the rdflib type of `node`.
+        """Returns an appropriate python datatype for the rdflib type of `node`, or `None``
+        if `node` is `None`.
 
         Args:
             node (Node): the node to convert
@@ -107,8 +108,10 @@ class RDFFilters(Extension):
         Returns:
             _type_: an appropriate python representation of `node` (str, int, boolean etc.)
         """
-
-        return node.toPython()
+        value = None
+        if node:
+            value = node.toPython()
+        return value
 
     @staticmethod
     def is_iri(node: Node) -> bool:

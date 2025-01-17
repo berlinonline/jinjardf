@@ -50,6 +50,11 @@ class TestToPython(object):
             'node': URIRef('https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck'),
             'expected': 'https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck',
             'type': str
+        },
+        {
+            'node': None,
+            'expected': None,
+            'type': NoneType
         }
     ])
     def test_return_value_has_correct_type(self, data):
