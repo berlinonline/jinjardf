@@ -22,6 +22,7 @@ function are passed by the filter explicitly as parameters.
 
 Lets consider the filter function `rdf_get(iri: str)`. This filter could be used in a template as follows:
 
+{% raw %}
 ```jinja
 {{ 'https://example.com/foo/bar' | rdf_get }}
 ```
@@ -31,6 +32,7 @@ In this case, 'https://example.com/foo/bar' would be passed to `rdf_get()` as th
 The `rdf_property()` function (see above) would be used as a filter like this:
 
 ```jinja
+{% endraw %}
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
 
@@ -90,6 +92,7 @@ When used as a Jinja filter, the value passed is the `iri`.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set iri = 'https://example.com/foo/bar' %}
 {{ iri | rdf_get }}
@@ -140,6 +143,7 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 
 
 ```jinja
+{% endraw %}
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_iri %}
     {{ node }} is an IRI.
@@ -171,6 +175,7 @@ Return `True` if `node` is a blank node resource, `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_bnode %}
@@ -206,6 +211,7 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 
 
 ```jinja
+{% endraw %}
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_resource %}
     {{ node }} is a resource.
@@ -237,6 +243,7 @@ Return `True` if `node` is a literal, `False` if not.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
 {% set title = node | title_any %}
 {% if title | is_literal %}
@@ -278,6 +285,7 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 
 ```jinja
+{% endraw %}
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
 

@@ -8,7 +8,7 @@ def inject_raw_tags(file_path):
     inside_code_block = False
 
     for line in lines:
-        if line.strip().startswith("```"):
+        if line.strip().startswith("```jinja"):
             if not inside_code_block:
                 # Start of a code block
                 modified_lines.append("{% raw %}\n")
