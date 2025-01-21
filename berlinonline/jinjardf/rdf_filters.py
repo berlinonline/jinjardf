@@ -35,6 +35,15 @@ In this case, the function's `environment` parameter was passed by the `@pass_en
 `node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
 passed as the function's remaining three parameters `predicate`, `language` and `unique`.
 
+## Examples
+
+The documentation for the filter functions below includes examples of how to use them as filters
+in a Jinja template.
+For these examples, we assume that graph loaded by the `RDFEnvironment` contains the RDF from this
+dataset: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+
+
+
 """
 
 import logging
@@ -117,7 +126,7 @@ class RDFFilters(Extension):
 
     @staticmethod
     def rdf_get(iri: str) -> URIRef:
-        """Return an rdflib URIRef with the IRI that was passed as the value.
+        """Return an rdflib `URIRef` with the IRI that was passed as the value.
         When used as a Jinja filter, the value passed is the `iri`.
 
         **Usage in a template**:
@@ -138,11 +147,29 @@ class RDFFilters(Extension):
 
     @staticmethod
     def toPython(node: Node):
-        """Returns an appropriate python datatype for the rdflib type of `node`, or `None``
-        if `node` is `None`.
+        """Returns an appropriate python datatype for the rdflib type of `node`, or `None`
+        if `node` is `None`. This is useful if we want to compare the value of a literal
+        with a Jinja (Python) object, such as a String.
 
         Args:
             node (Node): the node to convert
+
+        **Usage in a template**:
+
+        ```jinja
+        node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        ---
+        {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
+        {% if gender == 'female' %}
+            weiblich
+        {% elif gender == 'male' %}
+            männlich
+        {% else %}
+            sonstiges
+        {% endif %}
+        ---
+        Output: "weiblich"
+        ```
 
         Returns:
             _type_: an appropriate python representation of `node` (str, int, boolean etc.)
