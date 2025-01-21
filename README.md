@@ -5,7 +5,7 @@
 
 Jinja-RDF provides the tools necessary to build static sites for RDF graphs:
 
-* several [custom filters](https://jinja.palletsprojects.com/en/stable/api/#custom-filters) for [Jinja](https://jinja.palletsprojects.com) for working with RDF data
+* several [custom filters](doc/rdf_filters) for [Jinja](https://jinja.palletsprojects.com) for working with RDF data
 * a custom Jinja environment that keeps a reference to an RDF graph
 * a site generator class that …
   * reads and interprets the configuration,

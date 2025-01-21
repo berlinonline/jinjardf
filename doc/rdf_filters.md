@@ -2,6 +2,42 @@
 
 # jinjardf.rdf\_filters
 
+This module defines a number of custom filters for Jinja2. Each filter is defined as a function.
+When used as a filter in a Jinja template, some of the function's parameters are already set.
+
+## Filter Parameters
+
+If the `@pass_environment` decorator is used, the Jinja environment that called the template is
+being passed to the filter function as the first parameter (usually called `environment`):
+
+```python
+@pass_environment
+def rdf_property(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str=None, unique: bool=False) -> List[Identifier]:
+...
+```
+
+The parameter after `environment` (or the first parameter, if the environment is not passed)
+is the value that the filter is being applied to in the template. The remaining parameters of the filter
+function are passed by the filter explicitly as parameters.
+
+Lets consider the filter function `rdf_get(iri: str)`. This filter could be used in a template as follows:
+
+```jinja
+{{ 'https://example.com/foo/bar' | rdf_get }}
+```
+
+In this case, 'https://example.com/foo/bar' would be passed to `rdf_get()` as the `iri` parameter.
+
+The `rdf_property()` function (see above) would be used as a filter like this:
+
+```jinja
+{{ node | rdf_property(RDFS.label, 'en', true) }}
+```
+
+In this case, the function's `environment` parameter was passed by the `@pass_environment` decorator, 
+`node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
+passed as the function's remaining three parameters `predicate`, `language` and `unique`.
+
 <a id="jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES"></a>
 
 #### DEFAULT\_TITLE\_PROPERTIES
@@ -54,12 +90,10 @@ When used as a Jinja filter, the value passed is the `iri`.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {% set iri = 'https://example.com/foo/bar' %}
 {{ iri | rdf_get }}
 ```
-{% endraw %}
 
 **Arguments**:
 
@@ -69,6 +103,27 @@ When used as a Jinja filter, the value passed is the `iri`.
 **Returns**:
 
 - `URIRef` - The returned resource.
+
+<a id="jinjardf.rdf_filters.RDFFilters.toPython"></a>
+
+#### toPython
+
+```python
+@staticmethod
+def toPython(node: Node)
+```
+
+Returns an appropriate python datatype for the rdflib type of `node`, or `None``
+if `node` is `None`.
+
+**Arguments**:
+
+- `node` _Node_ - the node to convert
+  
+
+**Returns**:
+
+- `_type_` - an appropriate python representation of `node` (str, int, boolean etc.)
 
 <a id="jinjardf.rdf_filters.RDFFilters.is_iri"></a>
 
@@ -84,7 +139,6 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_iri %}
@@ -93,7 +147,6 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 ------
 https://example.com/foo/bar is an IRI.
 ```
-{% endraw %}
 
 **Arguments**:
 
@@ -118,7 +171,6 @@ Return `True` if `node` is a blank node resource, `False` if not.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_bnode %}
@@ -129,7 +181,6 @@ Return `True` if `node` is a blank node resource, `False` if not.
 ------
 https://example.com/foo/bar is not a Bnode.
 ```
-{% endraw %}
 
 **Arguments**:
 
@@ -154,7 +205,6 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_resource %}
@@ -163,7 +213,6 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 ------
 https://example.com/foo/bar is a resource.
 ```
-{% endraw %}
 
 **Arguments**:
 
@@ -188,7 +237,6 @@ Return `True` if `node` is a literal, `False` if not.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {% set title = node | title_any %}
 {% if title | is_literal %}
@@ -197,7 +245,6 @@ Return `True` if `node` is a literal, `False` if not.
 ------
 'Hello World' is a literal.
 ```
-{% endraw %}
 
 **Arguments**:
 
@@ -230,11 +277,9 @@ When used as a Jinja filter, the value passed is the `subject`.
 **Usage in a template**:
 
 
-{% raw %}
 ```jinja
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
-{% endraw %}
 
 **Arguments**:
 

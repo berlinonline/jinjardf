@@ -1,3 +1,42 @@
+"""
+This module defines a number of custom filters for Jinja2. Each filter is defined as a function.
+When used as a filter in a Jinja template, some of the function's parameters are already set.
+
+## Filter Parameters
+
+If the `@pass_environment` decorator is used, the Jinja environment that called the template is
+being passed to the filter function as the first parameter (usually called `environment`):
+
+```python
+@pass_environment
+def rdf_property(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str=None, unique: bool=False) -> List[Identifier]:
+...
+```
+
+The parameter after `environment` (or the first parameter, if the environment is not passed)
+is the value that the filter is being applied to in the template. The remaining parameters of the filter
+function are passed by the filter explicitly as parameters.
+
+Lets consider the filter function `rdf_get(iri: str)`. This filter could be used in a template as follows:
+
+```jinja
+{{ 'https://example.com/foo/bar' | rdf_get }}
+```
+
+In this case, 'https://example.com/foo/bar' would be passed to `rdf_get()` as the `iri` parameter.
+
+The `rdf_property()` function (see above) would be used as a filter like this:
+
+```jinja
+{{ node | rdf_property(RDFS.label, 'en', true) }}
+```
+
+In this case, the function's `environment` parameter was passed by the `@pass_environment` decorator, 
+`node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
+passed as the function's remaining three parameters `predicate`, `language` and `unique`.
+
+"""
+
 import logging
 from typing import Generator, List
 from urllib.parse import urlparse

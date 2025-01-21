@@ -23,10 +23,27 @@ temp:
 example/output:
 	mkdir -p example/output
 
-clean: clean-temp clean-output
+clean: clean-temp clean-output clean-doc
 
 clean-temp:
 	rm -rf temp
 
 clean-output:
 	rm -rf example/output
+
+clean-doc:
+	rm -rf doc
+
+doc:
+	mkdir -p doc
+
+doc/rdf_environment.md: doc
+	pydoc-markdown -I berlinonline -m jinjardf.rdf_environment > $@
+
+doc/rdf_filters.md: doc
+	pydoc-markdown -I berlinonline -m jinjardf.rdf_filters > $@
+
+doc/site_generator.md: doc
+	pydoc-markdown -I berlinonline -m jinjardf.site_generator > $@
+
+documentation: doc/rdf_filters.md doc/rdf_environment.md doc/site_generator.md

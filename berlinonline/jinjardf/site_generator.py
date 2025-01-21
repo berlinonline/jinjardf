@@ -1,3 +1,56 @@
+"""
+`jinjardf.site_generator` generates a static HTML site based on an RDF graph. It does so by
+iterating through the graph's resources and applying the appropriate Jinja template to it.
+One page will be generated for each resource selected from the graph.
+
+## Configuration
+
+The site generator is configured using a YAML file like this:
+
+```python
+generator = SiteGenerator('/path/to/config.yml')
+```
+
+The YAML file looks like this:
+
+```yaml
+base_url: 'https://berlin.github.io' # the base hostname & protocol for your site, e.g. http://example.com
+base_path: '/lod-budget' # the subpath of your site
+dataset_path: 'data/temp/all.part.nt' # the path to the RDF file containing the graph (can be any format that
+# rdflib can parse).
+template_path: 'templates' # the path to the folder containing the Jinja templates
+output_path: '_site/' # the output path where all generated HTML files will be placed
+prefixes: # a list of prefixes that should be available throughout the site-generation process
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  schema: https://schema.org/
+  void: http://rdfs.org/ns/void#
+  xsd: http://www.w3.org/2001/XMLSchema#
+include: # a list of files and folders that should be copied into the output_path
+  - assets/
+class_template_mappings: # mappings from classes to templates
+  "void:Dataset": "dataset.html.jinja"
+```
+
+If you want to run the generator locally for test purposes, you can also pass a second parameter with
+URL of the local test site (usually something like `http://localhost:8000`).
+
+## Template Variables
+
+In the templates that have been loaded by the site generator, a number of variables are
+available:
+
+- `node`: The node from the input graph that is currently being processed. In other words, resource
+for which the current page is being built. `node` is usually an instance of `rdflib.URIRef`, but can
+for most purposes be use like a `str` (the URI of the node).
+- `base_url`: The base URL of the site, e.g. `https://berlin.github.io`
+- `base_path`: The base path of the site, e.g. `/lod-budget`
+- `resource_prefix`: BASE_URL + BASE_PATH – the URIs of all resources included in the site are in this namespace
+- `prefixes`: A dictionary of prefixes that have been configured for the site generator.
+- All prefixes in `prefixes` are also available directly in upper case in the template and are instances
+of `rdflib.Namespace`. E.g., if `void: http://rdfs.org/ns/void#` is defined in the configuration, then
+in the template we can do `{{ VOID.Dataset }}` to get `http://rdfs.org/ns/void#Dataset`.
+"""
 from  http.server import SimpleHTTPRequestHandler
 import logging
 import os
@@ -29,16 +82,44 @@ DEFAULT_RESTRICTION = """
     FILTER(STRSTARTS(STR(?resourceUri), '{}'))
   }}
 """
+"""
+The default SPARQL query for selection of resources from the input graph, if
+`restriction_query` is not defined in the YAML config.
+It selects all subject URIs which start with the site's resource prefix
+(BASE_URL + BASE_PATH).
+"""
+
 DEFAULT_PREFIXES = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dct": "http://purl.org/dc/terms/",
 }
+"""
+A couple of default prefixes that are made available if `prefixes` is not set
+in the YAML config.
+"""
+
 DEFAULT_DATASET_PATH = 'data/data.ttl'
+"""
+The default path to the file containing the input RDF graph.
+"""
+
 DEFAULT_TEMPLATE_PATH = 'templates'
+"""
+The default path to the template folder.
+"""
+
 DEFAULT_TEMPLATE = 'default.html.jinja'
+"""
+The name of the default template that gets applied whenever no matching template could be
+found in `class_template_mappings`.
+"""
+
 DEFAULT_OUTPUT_PATH = 'output'
+"""
+The default path to the folder where all generated HTML files will be copied.
+"""
 
 def generate_output_path_from_resource(resource: URIRef, resource_prefix: str, output_path: str) -> str:
     path = resource.split(resource_prefix).pop()
