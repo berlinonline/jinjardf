@@ -42,8 +42,6 @@ in a Jinja template.
 For these examples, we assume that graph loaded by the `RDFEnvironment` contains the RDF from this
 dataset: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
 
-
-
 """
 
 import logging
@@ -128,6 +126,8 @@ class RDFFilters(Extension):
     def rdf_get(iri: str) -> URIRef:
         """Return an rdflib `URIRef` with the IRI that was passed as the value.
         When used as a Jinja filter, the value passed is the `iri`.
+        This is useful when we want to use use rdflib's API for URIRefs, or if we
+        want to compare the IRI with another URIRef.
 
         **Usage in a template**:
 
@@ -147,8 +147,8 @@ class RDFFilters(Extension):
 
     @staticmethod
     def toPython(node: Node):
-        """Returns an appropriate python datatype for the rdflib type of `node`, or `None`
-        if `node` is `None`. This is useful if we want to compare the value of a literal
+        """Returns an appropriate python datatype for the rdflib type of `node`, or `None` if
+        `node` is `None`. This is useful if we want to compare the value of a literal
         with a Jinja (Python) object, such as a String.
 
         Args:
@@ -156,9 +156,9 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        * node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+
         ```jinja
-        node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
-        ---
         {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
         {% if gender == 'female' %}
             weiblich
@@ -186,6 +186,7 @@ class RDFFilters(Extension):
         **Usage in a template**:
 
         ```jinja
+        node: 
         {% set node = 'https://example.com/foo/bar' | rdf_get %}
         {% if node | is_iri %}
             {{ node }} is an IRI.
