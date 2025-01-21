@@ -10,12 +10,15 @@ One page will be generated for each resource selected from the graph.
 
 The site generator is configured using a YAML file like this:
 
+{% raw %}
 ```python
 generator = SiteGenerator('/path/to/config.yml')
 ```
+{% endraw %}
 
 The YAML file looks like this:
 
+{% raw %}
 ```yaml
 base_url: 'https://berlin.github.io' # the base hostname & protocol for your site, e.g. http://example.com
 base_path: '/lod-budget' # the subpath of your site
@@ -34,6 +37,7 @@ include: # a list of files and folders that should be copied into the output_pat
 class_template_mappings: # mappings from classes to templates
   "void:Dataset": "dataset.html.jinja"
 ```
+{% endraw %}
 
 If you want to run the generator locally for test purposes, you can also pass a second parameter with
 URL of the local test site (usually something like `http://localhost:8000`).
@@ -99,17 +103,21 @@ The default path to the folder where all generated HTML files will be copied.
 
 ## SiteGenerator Objects
 
+{% raw %}
 ```python
 class SiteGenerator(object)
 ```
+{% endraw %}
 
 <a id="jinjardf.site_generator.SiteGenerator.read_config"></a>
 
 #### read\_config
 
+{% raw %}
 ```python
 def read_config(config_key: str, default)
 ```
+{% endraw %}
 
 Read a value from the config and return it. If config_key is not included,
 return the default instead. Write an appropriate log message for each case.
@@ -128,9 +136,11 @@ return the default instead. Write an appropriate log message for each case.
 
 #### extract\_resources
 
+{% raw %}
 ```python
 def extract_resources()
 ```
+{% endraw %}
 
 Run the restriction_query on the loaded RDF data to determine the set
 of resources to include in the static site.
@@ -139,9 +149,11 @@ of resources to include in the static site.
 
 #### compute\_resource\_class\_index
 
+{% raw %}
 ```python
 def compute_resource_class_index(resources: list) -> Dict[URIRef, list]
 ```
+{% endraw %}
 
 Compute an index dict from resources to classes (rdf:type). The index is computed
 
@@ -160,10 +172,12 @@ contained in the list of resources passed to the function.
 
 #### compute\_class\_superclass\_index
 
+{% raw %}
 ```python
 def compute_class_superclass_index(
         resource_class_index: dict) -> Dict[URIRef, list]
 ```
+{% endraw %}
 
 Compute an index dict from class URIs to lists of class URIs which are their
 superclasses, based on the current RDF graph. We consider all classes that are included
@@ -186,11 +200,13 @@ least specific superclass. This means that all resource keys in the index have a
 
 #### compute\_resource\_template\_index
 
+{% raw %}
 ```python
 def compute_resource_template_index(
         resources: list, resource_class_index: dict,
         class_superclass_index: dict) -> Dict[URIRef, str]
 ```
+{% endraw %}
 
 Compute an index dict from resource URIs to template names.
 
@@ -209,9 +225,11 @@ Compute an index dict from resource URIs to template names.
 
 ## CustomHandler Objects
 
+{% raw %}
 ```python
 class CustomHandler(SimpleHTTPRequestHandler)
 ```
+{% endraw %}
 
 A custom request handler that can serve *.html files without their file extension.
 I.e., I can request `xxxxx` and get `xxxxx.html`.

@@ -10,11 +10,13 @@ When used as a filter in a Jinja template, some of the function's parameters are
 If the `@pass_environment` decorator is used, the Jinja environment that called the template is
 being passed to the filter function as the first parameter (usually called `environment`):
 
+{% raw %}
 ```python
 @pass_environment
 def rdf_property(environment: RDFEnvironment, subject: IdentifiedNode, predicate: str, language: str=None, unique: bool=False) -> List[Identifier]:
 ...
 ```
+{% endraw %}
 
 The parameter after `environment` (or the first parameter, if the environment is not passed)
 is the value that the filter is being applied to in the template. The remaining parameters of the filter
@@ -26,15 +28,17 @@ Lets consider the filter function `rdf_get(iri: str)`. This filter could be used
 ```jinja
 {{ 'https://example.com/foo/bar' | rdf_get }}
 ```
+{% endraw %}
 
 In this case, 'https://example.com/foo/bar' would be passed to `rdf_get()` as the `iri` parameter.
 
 The `rdf_property()` function (see above) would be used as a filter like this:
 
+{% raw %}
 ```jinja
-{% endraw %}
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
+{% endraw %}
 
 In this case, the function's `environment` parameter was passed by the `@pass_environment` decorator, 
 `node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
@@ -68,9 +72,11 @@ the `description()` and `description_any()` filters. The properties are:
 
 ## RDFFilters Objects
 
+{% raw %}
 ```python
 class RDFFilters(Extension)
 ```
+{% endraw %}
 
 Implementation of a Jinja2 extension that provides various filters for
 working with RDF data. The filters are based on the rdflib library.
@@ -81,10 +87,12 @@ See https://rdflib.readthedocs.io/en/stable/
 
 #### rdf\_get
 
+{% raw %}
 ```python
 @staticmethod
 def rdf_get(iri: str) -> URIRef
 ```
+{% endraw %}
 
 Return an rdflib URIRef with the IRI that was passed as the value.
 When used as a Jinja filter, the value passed is the `iri`.
@@ -97,6 +105,7 @@ When used as a Jinja filter, the value passed is the `iri`.
 {% set iri = 'https://example.com/foo/bar' %}
 {{ iri | rdf_get }}
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -111,10 +120,12 @@ When used as a Jinja filter, the value passed is the `iri`.
 
 #### toPython
 
+{% raw %}
 ```python
 @staticmethod
 def toPython(node: Node)
 ```
+{% endraw %}
 
 Returns an appropriate python datatype for the rdflib type of `node`, or `None``
 if `node` is `None`.
@@ -132,18 +143,20 @@ if `node` is `None`.
 
 #### is\_iri
 
+{% raw %}
 ```python
 @staticmethod
 def is_iri(node: Node) -> bool
 ```
+{% endraw %}
 
 Return `True` if `node` is an IRI (URI) resource, `False` if not.
 
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
-{% endraw %}
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_iri %}
     {{ node }} is an IRI.
@@ -151,6 +164,7 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 ------
 https://example.com/foo/bar is an IRI.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -165,10 +179,12 @@ https://example.com/foo/bar is an IRI.
 
 #### is\_bnode
 
+{% raw %}
 ```python
 @staticmethod
 def is_bnode(node: Node) -> bool
 ```
+{% endraw %}
 
 Return `True` if `node` is a blank node resource, `False` if not.
 
@@ -186,6 +202,7 @@ Return `True` if `node` is a blank node resource, `False` if not.
 ------
 https://example.com/foo/bar is not a Bnode.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -200,18 +217,20 @@ https://example.com/foo/bar is not a Bnode.
 
 #### is\_resource
 
+{% raw %}
 ```python
 @staticmethod
 def is_resource(node: Node) -> bool
 ```
+{% endraw %}
 
 Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
-{% endraw %}
 {% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_resource %}
     {{ node }} is a resource.
@@ -219,6 +238,7 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 ------
 https://example.com/foo/bar is a resource.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -233,10 +253,12 @@ https://example.com/foo/bar is a resource.
 
 #### is\_literal
 
+{% raw %}
 ```python
 @staticmethod
 def is_literal(node: Node) -> bool
 ```
+{% endraw %}
 
 Return `True` if `node` is a literal, `False` if not.
 
@@ -252,6 +274,7 @@ Return `True` if `node` is a literal, `False` if not.
 ------
 'Hello World' is a literal.
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -266,6 +289,7 @@ Return `True` if `node` is a literal, `False` if not.
 
 #### rdf\_property
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -275,6 +299,7 @@ def rdf_property(environment: RDFEnvironment,
                  language: str = None,
                  unique: bool = False) -> List[Identifier]
 ```
+{% endraw %}
 
 Return the objects for the pattern (`subject`, `predicate`, `OBJ`).
 If an optional language code is provided, the results will be filtered to only
@@ -284,10 +309,11 @@ When used as a Jinja filter, the value passed is the `subject`.
 **Usage in a template**:
 
 
+{% raw %}
 ```jinja
-{% endraw %}
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
+{% endraw %}
 
 **Arguments**:
 
@@ -306,6 +332,7 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 #### rdf\_property\_any
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -314,6 +341,7 @@ def rdf_property_any(environment: RDFEnvironment,
                      predicate: str,
                      language: str = None) -> Identifier
 ```
+{% endraw %}
 
 Return one arbitrary object for the pattern (`subject`, `predicate`, `OBJ`).
 If an optional language code is provided, only a literal with that language will
@@ -336,6 +364,7 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 #### rdf\_inverse\_property
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -344,6 +373,7 @@ def rdf_inverse_property(environment: RDFEnvironment,
                          predicate: str,
                          unique: bool = False) -> List[IdentifiedNode]
 ```
+{% endraw %}
 
 Return the subjects for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
@@ -364,6 +394,7 @@ When used as a Jinja filter, the value passed is the `object`.
 
 #### rdf\_inverse\_property\_any
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -371,6 +402,7 @@ def rdf_inverse_property_any(environment: RDFEnvironment,
                              object: IdentifiedNode,
                              predicate: str) -> IdentifiedNode
 ```
+{% endraw %}
 
 Return one arbitrary subject for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
@@ -390,12 +422,14 @@ When used as a Jinja filter, the value passed is the `object`.
 
 #### sparql\_query
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
 def sparql_query(environment: RDFEnvironment, resourceURI: URIRef,
                  query: str) -> Result
 ```
+{% endraw %}
 
 Run a custom SPARQL query, where each occurrence of `?resourceUri`
 is replaced with the `resourceURI` parameter. Returns an iterator over the
@@ -418,6 +452,7 @@ See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Res
 
 #### statements\_as\_subject
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -425,6 +460,7 @@ def statements_as_subject(environment: RDFEnvironment,
                           resource: IdentifiedNode,
                           as_list: bool = False) -> Generator
 ```
+{% endraw %}
 
 Return all statements/triples in the graph where the current resource as
 passed to the filter is the subject.
@@ -443,6 +479,7 @@ passed to the filter is the subject.
 
 #### statements\_as\_object
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -450,6 +487,7 @@ def statements_as_object(environment: RDFEnvironment,
                          resource: IdentifiedNode,
                          as_list: bool = False) -> Generator
 ```
+{% endraw %}
 
 Return all statements/triples in the graph where the current resource as
 passed to the filter is the object.
@@ -468,6 +506,7 @@ passed to the filter is the object.
 
 #### get\_text
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -478,6 +517,7 @@ def get_text(environment: RDFEnvironment,
              return_first: bool = False,
              default: str = None) -> List[Literal]
 ```
+{% endraw %}
 
 Find all literals connected to `resource` via any of the `properties`, for all `languages`
 and return them as a list. This is e.g. used to get all titles, or all descriptions of a resource,
@@ -502,6 +542,7 @@ description-properties (`rdfs:comment`, `dct:description`, `schema:description` 
 
 #### title
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -511,6 +552,7 @@ def title(environment: RDFEnvironment,
           return_first: bool = False,
           default: str = None) -> List[Literal]
 ```
+{% endraw %}
 
 Find all titles (as defined by in the `environment`) for all languages specified and return them
 as a list.
@@ -532,6 +574,7 @@ as a list.
 
 #### description
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
@@ -541,6 +584,7 @@ def description(environment: RDFEnvironment,
                 return_first: bool = False,
                 default: str = None) -> List[Literal]
 ```
+{% endraw %}
 
 Find all descriptions (as defined by in the `environment`) for all languages specified and return them
 as a list.
@@ -562,11 +606,13 @@ as a list.
 
 #### relative\_uri
 
+{% raw %}
 ```python
 @staticmethod
 @pass_environment
 def relative_uri(environment: RDFEnvironment, resource: IdentifiedNode) -> str
 ```
+{% endraw %}
 
 Returns the URI of this resource relative to the site URL.
 
