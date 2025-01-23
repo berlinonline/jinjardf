@@ -1,3 +1,5 @@
+pydoc_config = '{ renderer: { type: markdown, header_level_by_type: {"Method": 3, "Function": 3, "Variable": 3 } } }'
+
 test:
 	coverage run --source=berlinonline.jinjardf -m pytest -vv -s berlinonline/jinjardf/tests && coverage html
 
@@ -38,13 +40,13 @@ doc:
 	mkdir -p doc
 
 temp/rdf_environment.md: temp
-	pydoc-markdown -I berlinonline -m jinjardf.rdf_environment > $@
+	pydoc-markdown -I berlinonline -m jinjardf.rdf_environment ${pydoc_config} > $@
 
 temp/rdf_filters.md: temp
-	pydoc-markdown -I berlinonline -m jinjardf.rdf_filters > $@
+	pydoc-markdown -I berlinonline -m jinjardf.rdf_filters ${pydoc_config} > $@
 
 temp/site_generator.md: temp
-	pydoc-markdown -I berlinonline -m jinjardf.site_generator > $@
+	pydoc-markdown -I berlinonline -m jinjardf.site_generator ${pydoc_config} > $@
 
 doc/%.md: temp/%.md doc
 	python bin/raw_codeblocks.py --input $< > $@

@@ -31,7 +31,7 @@ The `rdf_property()` function (see above) would be used as a filter like this:
 {{ node | rdf_property(RDFS.label, 'en', true) }}
 ```
 
-In this case, the function's `environment` parameter was passed by the `@pass_environment` decorator, 
+In this case, the function's `environment` parameter was passed by the `pass_environment` decorator, 
 `node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
 passed as the function's remaining three parameters `predicate`, `language` and `unique`.
 
@@ -151,12 +151,9 @@ class RDFFilters(Extension):
         `node` is `None`. This is useful if we want to compare the value of a literal
         with a Jinja (Python) object, such as a String.
 
-        Args:
-            node (Node): the node to convert
-
         **Usage in a template**:
 
-        * node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
 
         ```jinja
         {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
@@ -170,6 +167,9 @@ class RDFFilters(Extension):
         ---
         Output: "weiblich"
         ```
+
+        Args:
+            node (Node): the node to convert
 
         Returns:
             _type_: an appropriate python representation of `node` (str, int, boolean etc.)

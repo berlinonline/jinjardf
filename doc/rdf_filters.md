@@ -40,7 +40,7 @@ The `rdf_property()` function (see above) would be used as a filter like this:
 ```
 {% endraw %}
 
-In this case, the function's `environment` parameter was passed by the `@pass_environment` decorator, 
+In this case, the function's `environment` parameter was passed by the `pass_environment` decorator, 
 `node` from the template is passed as the `subject` parameter, and `RDFS.label`, `'en'` and `true` are
 passed as the function's remaining three parameters `predicate`, `language` and `unique`.
 
@@ -53,7 +53,7 @@ dataset: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
 
 <a id="jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES"></a>
 
-#### DEFAULT\_TITLE\_PROPERTIES
+### DEFAULT\_TITLE\_PROPERTIES
 
 A list of properties that all mean something like 'title' and are used by
 the `title()` and `title_any()` filters. The properties are:
@@ -66,7 +66,7 @@ the `title()` and `title_any()` filters. The properties are:
 
 <a id="jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES"></a>
 
-#### DEFAULT\_DESCRIPTION\_PROPERTIES
+### DEFAULT\_DESCRIPTION\_PROPERTIES
 
 A list of properties that all mean something like 'description' and are used by
 the `description()` and `description_any()` filters. The properties are:
@@ -92,7 +92,7 @@ See https://rdflib.readthedocs.io/en/stable/
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_get"></a>
 
-#### rdf\_get
+### rdf\_get
 
 {% raw %}
 ```python
@@ -127,7 +127,7 @@ want to compare the IRI with another URIRef.
 
 <a id="jinjardf.rdf_filters.RDFFilters.toPython"></a>
 
-#### toPython
+### toPython
 
 {% raw %}
 ```python
@@ -140,14 +140,11 @@ Returns an appropriate python datatype for the rdflib type of `node`, or `None` 
 `node` is `None`. This is useful if we want to compare the value of a literal
 with a Jinja (Python) object, such as a String.
 
-**Arguments**:
+**Usage in a template**:
 
-- `node` _Node_ - the node to convert
-  
-  **Usage in a template**:
-  
-  * node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
-  
+- node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+
+
 {% raw %}
 ```jinja
 {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
@@ -162,6 +159,10 @@ with a Jinja (Python) object, such as a String.
 Output: "weiblich"
 ```
 {% endraw %}
+
+**Arguments**:
+
+- `node` _Node_ - the node to convert
   
 
 **Returns**:
@@ -170,7 +171,7 @@ Output: "weiblich"
 
 <a id="jinjardf.rdf_filters.RDFFilters.is_iri"></a>
 
-#### is\_iri
+### is\_iri
 
 {% raw %}
 ```python
@@ -207,7 +208,7 @@ https://example.com/foo/bar is an IRI.
 
 <a id="jinjardf.rdf_filters.RDFFilters.is_bnode"></a>
 
-#### is\_bnode
+### is\_bnode
 
 {% raw %}
 ```python
@@ -245,7 +246,7 @@ https://example.com/foo/bar is not a Bnode.
 
 <a id="jinjardf.rdf_filters.RDFFilters.is_resource"></a>
 
-#### is\_resource
+### is\_resource
 
 {% raw %}
 ```python
@@ -281,7 +282,7 @@ https://example.com/foo/bar is a resource.
 
 <a id="jinjardf.rdf_filters.RDFFilters.is_literal"></a>
 
-#### is\_literal
+### is\_literal
 
 {% raw %}
 ```python
@@ -317,7 +318,7 @@ Return `True` if `node` is a literal, `False` if not.
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_property"></a>
 
-#### rdf\_property
+### rdf\_property
 
 {% raw %}
 ```python
@@ -360,7 +361,7 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_property_any"></a>
 
-#### rdf\_property\_any
+### rdf\_property\_any
 
 {% raw %}
 ```python
@@ -392,7 +393,7 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_inverse_property"></a>
 
-#### rdf\_inverse\_property
+### rdf\_inverse\_property
 
 {% raw %}
 ```python
@@ -422,7 +423,7 @@ When used as a Jinja filter, the value passed is the `object`.
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_inverse_property_any"></a>
 
-#### rdf\_inverse\_property\_any
+### rdf\_inverse\_property\_any
 
 {% raw %}
 ```python
@@ -450,7 +451,7 @@ When used as a Jinja filter, the value passed is the `object`.
 
 <a id="jinjardf.rdf_filters.RDFFilters.sparql_query"></a>
 
-#### sparql\_query
+### sparql\_query
 
 {% raw %}
 ```python
@@ -480,7 +481,7 @@ See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Res
 
 <a id="jinjardf.rdf_filters.RDFFilters.statements_as_subject"></a>
 
-#### statements\_as\_subject
+### statements\_as\_subject
 
 {% raw %}
 ```python
@@ -507,7 +508,7 @@ passed to the filter is the subject.
 
 <a id="jinjardf.rdf_filters.RDFFilters.statements_as_object"></a>
 
-#### statements\_as\_object
+### statements\_as\_object
 
 {% raw %}
 ```python
@@ -534,7 +535,7 @@ passed to the filter is the object.
 
 <a id="jinjardf.rdf_filters.RDFFilters.get_text"></a>
 
-#### get\_text
+### get\_text
 
 {% raw %}
 ```python
@@ -570,7 +571,7 @@ description-properties (`rdfs:comment`, `dct:description`, `schema:description` 
 
 <a id="jinjardf.rdf_filters.RDFFilters.title"></a>
 
-#### title
+### title
 
 {% raw %}
 ```python
@@ -602,7 +603,7 @@ as a list.
 
 <a id="jinjardf.rdf_filters.RDFFilters.description"></a>
 
-#### description
+### description
 
 {% raw %}
 ```python
@@ -634,7 +635,7 @@ as a list.
 
 <a id="jinjardf.rdf_filters.RDFFilters.relative_uri"></a>
 
-#### relative\_uri
+### relative\_uri
 
 {% raw %}
 ```python

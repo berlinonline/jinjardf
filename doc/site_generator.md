@@ -60,7 +60,7 @@ in the template we can do `{{ VOID.Dataset }}` to get `http://rdfs.org/ns/void#D
 
 <a id="jinjardf.site_generator.DEFAULT_RESTRICTION"></a>
 
-#### DEFAULT\_RESTRICTION
+### DEFAULT\_RESTRICTION
 
 The default SPARQL query for selection of resources from the input graph, if
 `restriction_query` is not defined in the YAML config.
@@ -69,33 +69,33 @@ It selects all subject URIs which start with the site's resource prefix
 
 <a id="jinjardf.site_generator.DEFAULT_PREFIXES"></a>
 
-#### DEFAULT\_PREFIXES
+### DEFAULT\_PREFIXES
 
 A couple of default prefixes that are made available if `prefixes` is not set
 in the YAML config.
 
 <a id="jinjardf.site_generator.DEFAULT_DATASET_PATH"></a>
 
-#### DEFAULT\_DATASET\_PATH
+### DEFAULT\_DATASET\_PATH
 
 The default path to the file containing the input RDF graph.
 
 <a id="jinjardf.site_generator.DEFAULT_TEMPLATE_PATH"></a>
 
-#### DEFAULT\_TEMPLATE\_PATH
+### DEFAULT\_TEMPLATE\_PATH
 
 The default path to the template folder.
 
 <a id="jinjardf.site_generator.DEFAULT_TEMPLATE"></a>
 
-#### DEFAULT\_TEMPLATE
+### DEFAULT\_TEMPLATE
 
 The name of the default template that gets applied whenever no matching template could be
 found in `class_template_mappings`.
 
 <a id="jinjardf.site_generator.DEFAULT_OUTPUT_PATH"></a>
 
-#### DEFAULT\_OUTPUT\_PATH
+### DEFAULT\_OUTPUT\_PATH
 
 The default path to the folder where all generated HTML files will be copied.
 
@@ -111,7 +111,7 @@ class SiteGenerator(object)
 
 <a id="jinjardf.site_generator.SiteGenerator.read_config"></a>
 
-#### read\_config
+### read\_config
 
 {% raw %}
 ```python
@@ -134,7 +134,7 @@ return the default instead. Write an appropriate log message for each case.
 
 <a id="jinjardf.site_generator.SiteGenerator.extract_resources"></a>
 
-#### extract\_resources
+### extract\_resources
 
 {% raw %}
 ```python
@@ -147,7 +147,7 @@ of resources to include in the static site.
 
 <a id="jinjardf.site_generator.SiteGenerator.compute_resource_class_index"></a>
 
-#### compute\_resource\_class\_index
+### compute\_resource\_class\_index
 
 {% raw %}
 ```python
@@ -170,7 +170,7 @@ contained in the list of resources passed to the function.
 
 <a id="jinjardf.site_generator.SiteGenerator.compute_class_superclass_index"></a>
 
-#### compute\_class\_superclass\_index
+### compute\_class\_superclass\_index
 
 {% raw %}
 ```python
@@ -198,7 +198,7 @@ least specific superclass. This means that all resource keys in the index have a
 
 <a id="jinjardf.site_generator.SiteGenerator.compute_resource_template_index"></a>
 
-#### compute\_resource\_template\_index
+### compute\_resource\_template\_index
 
 {% raw %}
 ```python
