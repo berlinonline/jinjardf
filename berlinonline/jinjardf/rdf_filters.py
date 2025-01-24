@@ -131,9 +131,17 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        The (somewhat contrieved) example is using `rdf_get` to turn a string into
+        a URIRef object, so what we can use the `n3()` function on it.
+        (https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)
+
         ```jinja
-        {% set iri = 'https://example.com/foo/bar' %}
-        {{ iri | rdf_get }}
+        {% set iri_string = 'https://example.com/foo/bar' %}
+        {% set iri = iri_string | rdf_get %}
+        {{ iri.n3() }}
+        ---
+        Output:
+        <https://example.com/foo/bar>
         ```
 
         Args:
@@ -165,7 +173,8 @@ class RDFFilters(Extension):
             sonstiges
         {% endif %}
         ---
-        Output: "weiblich"
+        Output:
+        weiblich
         ```
 
         Args:
@@ -185,14 +194,15 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
         ```jinja
-        node: 
-        {% set node = 'https://example.com/foo/bar' | rdf_get %}
         {% if node | is_iri %}
             {{ node }} is an IRI.
         {% endif %}
         ------
-        https://example.com/foo/bar is an IRI.
+        Output:
+        https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is an IRI.
         ```
 
         Args:
@@ -209,15 +219,17 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
         ```jinja
-        {% set node = 'https://example.com/foo/bar' | rdf_get %}
         {% if node | is_bnode %}
             {{ node }} is a Bnode.
         {% else %}
             {{ node }} is not a Bnode.
         {% endif %}
         ------
-        https://example.com/foo/bar is not a Bnode.
+        Output:
+        https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is not a Bnode.
         ```
 
         Args:
@@ -234,13 +246,14 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
         ```jinja
-        {% set node = 'https://example.com/foo/bar' | rdf_get %}
         {% if node | is_resource %}
             {{ node }} is a resource.
         {% endif %}
         ------
-        https://example.com/foo/bar is a resource.
+        Output: https://example.com/foo/bar is a resource.
         ```
 
         Args:
@@ -257,13 +270,16 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
         ```jinja
-        {% set title = node | title_any %}
-        {% if title | is_literal %}
-            '{{ title }}' is a literal.
-        {% endif %}
+        {% set title = node | title_any(language=['en']) %}
+        {{ node }} is a literal: {% node | is_literal %}<br/>
+        '{{ title }}' is a literal: {% title | is_literal %}<br/>
         ------
-        'Hello World' is a literal.
+        Output:
+        https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is a literal: False
+        'Della Duck' is a literal: True
         ```
 
         Args:

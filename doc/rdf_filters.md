@@ -30,7 +30,7 @@ Lets consider the filter function `rdf_get(iri: str)`. This filter could be used
 ```
 {% endraw %}
 
-In this case, 'https://example.com/foo/bar' would be passed to `rdf_get()` as the `iri` parameter.
+In this case, '[https://example.com/foo/bar'](https://example.com/foo/bar') would be passed to `rdf_get()` as the `iri` parameter.
 
 The `rdf_property()` function (see above) would be used as a filter like this:
 
@@ -49,7 +49,7 @@ passed as the function's remaining three parameters `predicate`, `language` and 
 The documentation for the filter functions below includes examples of how to use them as filters
 in a Jinja template.
 For these examples, we assume that graph loaded by the `RDFEnvironment` contains the RDF from this
-dataset: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+dataset: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/)
 
 <a id="jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES"></a>
 
@@ -88,7 +88,7 @@ class RDFFilters(Extension)
 Implementation of a Jinja2 extension that provides various filters for
 working with RDF data. The filters are based on the rdflib library.
 
-See https://rdflib.readthedocs.io/en/stable/
+See [https://rdflib.readthedocs.io/en/stable/](https://rdflib.readthedocs.io/en/stable/)
 
 <a id="jinjardf.rdf_filters.RDFFilters.rdf_get"></a>
 
@@ -108,11 +108,19 @@ want to compare the IRI with another URIRef.
 
 **Usage in a template**:
 
+The (somewhat contrieved) example is using `rdf_get` to turn a string into
+a URIRef object, so what we can use the `n3()` function on it.
+([https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3))
+
 
 {% raw %}
 ```jinja
-{% set iri = 'https://example.com/foo/bar' %}
-{{ iri | rdf_get }}
+{% set iri_string = 'https://example.com/foo/bar' %}
+{% set iri = iri_string | rdf_get %}
+{{ iri.n3() }}
+---
+Output:
+<https://example.com/foo/bar>
 ```
 {% endraw %}
 
@@ -142,7 +150,7 @@ with a Jinja (Python) object, such as a String.
 
 **Usage in a template**:
 
-- node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
 
 
 {% raw %}
@@ -156,7 +164,8 @@ with a Jinja (Python) object, such as a String.
     sonstiges
 {% endif %}
 ---
-Output: "weiblich"
+Output:
+weiblich
 ```
 {% endraw %}
 
@@ -184,16 +193,17 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 
 **Usage in a template**:
 
+- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 {% raw %}
 ```jinja
-node: 
-{% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_iri %}
     {{ node }} is an IRI.
 {% endif %}
 ------
-https://example.com/foo/bar is an IRI.
+Output:
+https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is an IRI.
 ```
 {% endraw %}
 
@@ -221,17 +231,19 @@ Return `True` if `node` is a blank node resource, `False` if not.
 
 **Usage in a template**:
 
+- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 {% raw %}
 ```jinja
-{% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_bnode %}
     {{ node }} is a Bnode.
 {% else %}
     {{ node }} is not a Bnode.
 {% endif %}
 ------
-https://example.com/foo/bar is not a Bnode.
+Output:
+https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is not a Bnode.
 ```
 {% endraw %}
 
@@ -259,15 +271,16 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 
 **Usage in a template**:
 
+- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 {% raw %}
 ```jinja
-{% set node = 'https://example.com/foo/bar' | rdf_get %}
 {% if node | is_resource %}
     {{ node }} is a resource.
 {% endif %}
 ------
-https://example.com/foo/bar is a resource.
+Output: https://example.com/foo/bar is a resource.
 ```
 {% endraw %}
 
@@ -295,15 +308,18 @@ Return `True` if `node` is a literal, `False` if not.
 
 **Usage in a template**:
 
+- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 {% raw %}
 ```jinja
-{% set title = node | title_any %}
-{% if title | is_literal %}
-    '{{ title }}' is a literal.
-{% endif %}
+{% set title = node | title_any(language=['en']) %}
+{{ node }} is a literal: {% node | is_literal %}<br/>
+'{{ title }}' is a literal: {% title | is_literal %}<br/>
 ------
-'Hello World' is a literal.
+Output:
+https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is a literal: False
+'Della Duck' is a literal: True
 ```
 {% endraw %}
 
@@ -466,7 +482,7 @@ Run a custom SPARQL query, where each occurrence of `?resourceUri`
 is replaced with the `resourceURI` parameter. Returns an iterator over the
 resultset, where each result contains the bindings for the selected variables
 (in the case of a SELECT query).
-See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.
+See [https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.](https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.)
 
 **Arguments**:
 

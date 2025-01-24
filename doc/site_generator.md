@@ -40,7 +40,7 @@ class_template_mappings: # mappings from classes to templates
 {% endraw %}
 
 If you want to run the generator locally for test purposes, you can also pass a second parameter with
-URL of the local test site (usually something like `http://localhost:8000`).
+URL of the local test site (usually something like `[http://localhost:8000`).](http://localhost:8000`).)
 
 ## Template Variables
 
@@ -50,13 +50,13 @@ available:
 - `node`: The node from the input graph that is currently being processed. In other words, resource
 for which the current page is being built. `node` is usually an instance of `rdflib.URIRef`, but can
 for most purposes be use like a `str` (the URI of the node).
-- `base_url`: The base URL of the site, e.g. `https://berlin.github.io`
+- `base_url`: The base URL of the site, e.g. `[https://berlin.github.io`](https://berlin.github.io`)
 - `base_path`: The base path of the site, e.g. `/lod-budget`
 - `resource_prefix`: BASE_URL + BASE_PATH – the URIs of all resources included in the site are in this namespace
 - `prefixes`: A dictionary of prefixes that have been configured for the site generator.
 - All prefixes in `prefixes` are also available directly in upper case in the template and are instances
-of `rdflib.Namespace`. E.g., if `void: http://rdfs.org/ns/void#` is defined in the configuration, then
-in the template we can do `{{ VOID.Dataset }}` to get `http://rdfs.org/ns/void#Dataset`.
+of `rdflib.Namespace`. E.g., if `void: [http://rdfs.org/ns/void#`](http://rdfs.org/ns/void#`) is defined in the configuration, then
+in the template we can do `{{ VOID.Dataset }}` to get `[http://rdfs.org/ns/void#Dataset`.](http://rdfs.org/ns/void#Dataset`.)
 
 <a id="jinjardf.site_generator.DEFAULT_RESTRICTION"></a>
 
