@@ -48,7 +48,7 @@ passed as the function's remaining three parameters `predicate`, `language` and 
 
 The documentation for the filter functions below includes examples of how to use them as filters
 in a Jinja template.
-For these examples, we assume that graph loaded by the `RDFEnvironment` contains the RDF from this
+For these examples, we assume the graph loaded by the `RDFEnvironment` contains the RDF from this
 dataset: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/)
 
 <a id="jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES"></a>
@@ -535,6 +535,25 @@ def rdf_inverse_property_any(environment: RDFEnvironment,
 Return one arbitrary subject for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
 
+**Usage in a template**:
+
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
+
+
+{% raw %}
+```jinja
+{# Pick any of Della's children by using `hasParent` in the inverse direction. #}
+{% set child =  node | rdf_inverse_property_any(FAMILY.hasParent) %}
+Della's child: {{ child }}
+```
+{% endraw %}
+{% raw %}
+```html
+Della's child: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Huey
+```
+{% endraw %}
+
 **Arguments**:
 
 - `environment` _RDFEnvironment_ - the RDFEnvironment
@@ -560,21 +579,62 @@ def sparql_query(environment: RDFEnvironment, resourceURI: URIRef,
 {% endraw %}
 
 Run a custom SPARQL query, where each occurrence of `?resourceUri`
-is replaced with the `resourceURI` parameter. Returns an iterator over the
+is replaced with the `resourceURI` parameter. Returns an rdflib.query.Result object.
+What this actually is depends on the type of query (see
+[https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.query.Result).](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.query.Result).) In the
+typical case of a SELECT query the result is an iterator of rdflib.query.ResultRow obejcts,
+where each row represents one result and gives access to the variable bindings as attributes
+(`result.variable`) or via `[]` notation (`result['variable']).
+
+Returns an iterator over the
 resultset, where each result contains the bindings for the selected variables
 (in the case of a SELECT query).
 See [https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.](https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.)
 
+**Usage in a template**:
+
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
+
+
+{% raw %}
+```jinja
+{% set sibling_query = '''
+SELECT DISTINCT ?sibling
+WHERE {
+    ?resourceUri family:hasParent ?parent .
+    ?sibling family:hasParent ?parent .
+    FILTER(?sibling != ?resourceUri)
+}
+'''%}
+{% set results = node | sparql_query(sibling_query) %}
+{% if results %}
+    <ul>
+    {% for result in results %}
+        <li>{{ result['sibling'] }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+```
+{% endraw %}
+{% raw %}
+```html
+<ul>
+    <li>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck</li>
+</ul>
+```
+{% endraw %}
+
 **Arguments**:
 
 - `environment` _RDFEnvironment_ - the RDFEnvironment
-- `resourceURI` _URIRef_ - URIRef to drop into the query.
-- `query` _str_ - the actual query.
+- `resourceURI` _URIRef_ - URIRef to drop into the query
+- `query` _str_ - the actual query
   
 
 **Returns**:
 
-- `Result` - the iterable query result
+- `rdflib.query.Result` - the query result
 
 <a id="jinjardf.rdf_filters.RDFFilters.statements_as_subject"></a>
 
@@ -593,10 +653,67 @@ def statements_as_subject(environment: RDFEnvironment,
 Return all statements/triples in the graph where the current resource as
 passed to the filter is the subject.
 
+**Usage in a template**:
+
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/)
+
+
+
+{% raw %}
+```jinja
+Statements with literal objects about {{ node }}:
+{%- if statements | length > 0 %}
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Literal</th>
+        </tr>
+        {% for s, p, o in statements -%}
+            {%- if o | is_literal %}
+                <tr>
+                    <td>{{ p }}</td>
+                    <td>"{{ o }}"</td>
+                </tr>
+            {%- endif -%}
+        {%- endfor %}
+    </table>
+{% endif %}
+```
+{% endraw %}
+{% raw %}
+```html
+Statements with literal objects about https://berlinonline.github.io/jinja-rdf-demo/example/ducks/:
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Literal</th>
+    </tr>
+    <tr>
+        <td>http://purl.org/dc/terms/created</td>
+        <td>"2024-12-13"</td>
+    </tr>
+    <tr>
+        <td>http://purl.org/dc/terms/description</td>
+        <td>"Excerpt of the family tree of the fictional character Donald Duck. Sources for the family tree are Wikipedia, for names in different languages Wikidata."</td>
+    </tr>
+    <tr>
+        <td>http://purl.org/dc/terms/modified</td>
+        <td>"2025-01-21"</td>
+    </tr>
+    <tr>
+        <td>http://purl.org/dc/terms/title</td>
+        <td>"Duck Family Tree"</td>
+    </tr>
+</table>
+```
+{% endraw %}
+
 **Arguments**:
 
 - `environment` _RDFEnvironment_ - the RDFEnvironment
 - `resource` _IdentifiedNode_ - The resource as passed to the filter as the value.
+- `as_list` _bool_ - If True, return a list instead of a generator. Defaults to `False`.
+  Useful if we want to know the size of the resultset before iterating through it.
   
 
 **Yields**:
@@ -624,6 +741,8 @@ passed to the filter is the object.
 
 - `environment` _RDFEnvironment_ - the RDFEnvironment
 - `resource` _IdentifiedNode_ - The resource as passed to the filter as the value.
+- `as_list` _bool_ - If True, return a list instead of a generator. Defaults to `False`.
+  Useful if we want to know the size of the resultset before iterating through it.
   
 
 **Yields**:
