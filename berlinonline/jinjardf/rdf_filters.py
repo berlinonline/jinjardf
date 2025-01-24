@@ -300,8 +300,17 @@ class RDFFilters(Extension):
 
         **Usage in a template**:
 
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
         ```jinja
-        {{ node | rdf_property(RDFS.label, 'en', true) }}
+        schema:names: {{ node | rdf_property(SCHEMA.name) }}<br/>
+        Japanese schema:names: {{ node | rdf_property(SCHEMA.name, 'ja') }}<br/>
+        rdfs:labels: {{ node | rdf_property(RDFS.label) }}<br/>
+        ------
+        Output:
+        schema:names: [ 'Della And', 'Della Duck', 'Ντέλλα Ντακ', 'Della Duck', 'Bella Pato', 'デラ・ダック', … ]
+        Japanese schema:names: [ 'デラ・ダック' ]
+        rdfs:labels: []
         ```
 
         Args:
@@ -340,6 +349,21 @@ class RDFFilters(Extension):
         If an optional language code is provided, only a literal with that language will
         be returned.
         When used as a Jinja filter, the value passed is the `subject`.
+
+        **Usage in a template**:
+
+        - node: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        
+        ```jinja
+        any schema:name: {{ node | rdf_property_any(SCHEMA.name) }}<br/>
+        any Japanese schema:name: {{ node | rdf_property_any(SCHEMA.name, 'ja') }}<br/>
+        any rdfs:label: {{ node | rdf_property_any(RDFS.label) }}<br/>
+        ------
+        Output:
+        any schema:name: 'Della And'
+        any Japanese schema:name: 'デラ・ダック'
+        any rdfs:label: None
+        ```
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
