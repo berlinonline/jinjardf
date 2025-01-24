@@ -113,13 +113,16 @@ a URIRef object, so what we can use the `n3()` function on it.
 ([https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3))
 
 
+
 {% raw %}
 ```jinja
 {% set iri_string = 'https://example.com/foo/bar' %}
 {% set iri = iri_string | rdf_get %}
 {{ iri.n3() }}
----
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 <https://example.com/foo/bar>
 ```
 {% endraw %}
@@ -150,7 +153,8 @@ with a Jinja (Python) object, such as a String.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -163,8 +167,10 @@ with a Jinja (Python) object, such as a String.
 {% else %}
     sonstiges
 {% endif %}
----
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 weiblich
 ```
 {% endraw %}
@@ -193,7 +199,8 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -201,8 +208,10 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 {% if node | is_iri %}
     {{ node }} is an IRI.
 {% endif %}
-------
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is an IRI.
 ```
 {% endraw %}
@@ -231,7 +240,8 @@ Return `True` if `node` is a blank node resource, `False` if not.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -241,8 +251,10 @@ Return `True` if `node` is a blank node resource, `False` if not.
 {% else %}
     {{ node }} is not a Bnode.
 {% endif %}
-------
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is not a Bnode.
 ```
 {% endraw %}
@@ -271,7 +283,8 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -279,8 +292,11 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 {% if node | is_resource %}
     {{ node }} is a resource.
 {% endif %}
-------
-Output: https://example.com/foo/bar is a resource.
+```
+{% endraw %}
+{% raw %}
+```html
+https://example.com/foo/bar is a resource.
 ```
 {% endraw %}
 
@@ -308,7 +324,8 @@ Return `True` if `node` is a literal, `False` if not.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -316,8 +333,10 @@ Return `True` if `node` is a literal, `False` if not.
 {% set title = node | title_any(language=['en']) %}
 {{ node }} is a literal: {% node | is_literal %}<br/>
 '{{ title }}' is a literal: {% title | is_literal %}<br/>
-------
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is a literal: False
 'Della Duck' is a literal: True
 ```
@@ -355,7 +374,8 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -363,8 +383,10 @@ When used as a Jinja filter, the value passed is the `subject`.
 schema:names: {{ node | rdf_property(SCHEMA.name) }}<br/>
 Japanese schema:names: {{ node | rdf_property(SCHEMA.name, 'ja') }}<br/>
 rdfs:labels: {{ node | rdf_property(RDFS.label) }}<br/>
-------
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 schema:names: [ 'Della And', 'Della Duck', 'Ντέλλα Ντακ', 'Della Duck', 'Bella Pato', 'デラ・ダック', … ]
 Japanese schema:names: [ 'デラ・ダック' ]
 rdfs:labels: []
@@ -406,7 +428,8 @@ When used as a Jinja filter, the value passed is the `subject`.
 
 **Usage in a template**:
 
-- node: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
 
 
 {% raw %}
@@ -414,8 +437,10 @@ When used as a Jinja filter, the value passed is the `subject`.
 any schema:name: {{ node | rdf_property_any(SCHEMA.name) }}<br/>
 any Japanese schema:name: {{ node | rdf_property_any(SCHEMA.name, 'ja') }}<br/>
 any rdfs:label: {{ node | rdf_property_any(RDFS.label) }}<br/>
-------
-Output:
+```
+{% endraw %}
+{% raw %}
+```html
 any schema:name: 'Della And'
 any Japanese schema:name: 'デラ・ダック'
 any rdfs:label: None
@@ -451,6 +476,35 @@ def rdf_inverse_property(environment: RDFEnvironment,
 
 Return the subjects for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
+
+**Usage in a template**:
+
+- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+
+
+
+{% raw %}
+```jinja
+{# Find Della's children by using `hasParent` in the inverse direction. #}
+{% set children =  node | rdf_inverse_property(FAMILY.hasParent) %}
+Della's children: 
+<ul>
+{% for child in children %}
+  <li>{{ child }}</li>
+{% endfor %}
+</ul>
+```
+{% endraw %}
+{% raw %}
+```html
+Della's children:
+<ul>
+  <li>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Dewey</li>
+  <li>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Huey</li>
+  <li>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Louie</li>
+</ul>
+```
+{% endraw %}
 
 **Arguments**:
 
