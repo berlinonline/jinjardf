@@ -48,13 +48,10 @@ temp/rdf_filters.md: temp
 temp/site_generator.md: temp
 	pydoc-markdown -I berlinonline -m jinjardf.site_generator ${pydoc_config} > $@
 
-doc/%.md: temp/%.md doc
+temp/%.with_links.md: temp/%.md
+	python bin/markdown_links.py --input $< > $@
+
+doc/%.md: temp/%.with_links.md doc
 	python bin/raw_codeblocks.py --input $< > $@
-
-# doc/rdf_filters.md: doc
-# 	pydoc-markdown -I berlinonline -m jinjardf.rdf_filters > $@
-
-# doc/site_generator.md: doc
-# 	pydoc-markdown -I berlinonline -m jinjardf.site_generator > $@
 
 documentation: doc/rdf_filters.md doc/rdf_environment.md doc/site_generator.md
