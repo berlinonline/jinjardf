@@ -1,6 +1,5 @@
 # Table of Contents
 
-* [jinjardf.site\_generator](#jinjardf.site_generator)
   * [DEFAULT\_RESTRICTION](#jinjardf.site_generator.DEFAULT_RESTRICTION)
   * [DEFAULT\_PREFIXES](#jinjardf.site_generator.DEFAULT_PREFIXES)
   * [DEFAULT\_DATASET\_PATH](#jinjardf.site_generator.DEFAULT_DATASET_PATH)
@@ -79,6 +78,18 @@ in the template we can do `{{ VOID.Dataset }}` to get `[http://rdfs.org/ns/void#
 
 ### DEFAULT\_RESTRICTION
 
+{% raw %}
+```python
+DEFAULT_RESTRICTION = """
+  SELECT ?resourceUri
+  WHERE {{
+    ?resourceUri ?predicate ?object
+    FILTER(STRSTARTS(STR(?resourceUri), '{}'))
+  }}
+"""
+```
+{% endraw %}
+
 The default SPARQL query for selection of resources from the input graph, if
 `restriction_query` is not defined in the YAML config.
 It selects all subject URIs which start with the site's resource prefix
@@ -88,6 +99,16 @@ It selects all subject URIs which start with the site's resource prefix
 
 ### DEFAULT\_PREFIXES
 
+{% raw %}
+```python
+DEFAULT_PREFIXES = {
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dct": "http://purl ...
+```
+{% endraw %}
+
 A couple of default prefixes that are made available if `prefixes` is not set
 in the YAML config.
 
@@ -95,11 +116,23 @@ in the YAML config.
 
 ### DEFAULT\_DATASET\_PATH
 
+{% raw %}
+```python
+DEFAULT_DATASET_PATH = 'data/data.ttl'
+```
+{% endraw %}
+
 The default path to the file containing the input RDF graph.
 
 <a id="jinjardf.site_generator.DEFAULT_TEMPLATE_PATH"></a>
 
 ### DEFAULT\_TEMPLATE\_PATH
+
+{% raw %}
+```python
+DEFAULT_TEMPLATE_PATH = 'templates'
+```
+{% endraw %}
 
 The default path to the template folder.
 
@@ -107,12 +140,24 @@ The default path to the template folder.
 
 ### DEFAULT\_TEMPLATE
 
+{% raw %}
+```python
+DEFAULT_TEMPLATE = 'default.html.jinja'
+```
+{% endraw %}
+
 The name of the default template that gets applied whenever no matching template could be
 found in `class_template_mappings`.
 
 <a id="jinjardf.site_generator.DEFAULT_OUTPUT_PATH"></a>
 
 ### DEFAULT\_OUTPUT\_PATH
+
+{% raw %}
+```python
+DEFAULT_OUTPUT_PATH = 'output'
+```
+{% endraw %}
 
 The default path to the folder where all generated HTML files will be copied.
 

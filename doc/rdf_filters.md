@@ -1,6 +1,5 @@
 # Table of Contents
 
-* [jinjardf.rdf\_filters](#jinjardf.rdf_filters)
   * [DEFAULT\_TITLE\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES)
   * [DEFAULT\_DESCRIPTION\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES)
   * [RDFFilters](#jinjardf.rdf_filters.RDFFilters)
@@ -79,25 +78,35 @@ dataset: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://
 
 ### DEFAULT\_TITLE\_PROPERTIES
 
-A list of properties that all mean something like 'title' and are used by
-the `title()` and `title_any()` filters. The properties are:
+{% raw %}
+```python
+DEFAULT_TITLE_PROPERTIES = [
+    RDFS.label,
+    DCT.title,
+    FOAF.name,
+    SCHEMA.name,
+    SKOS.prefLabel,
+]
+```
+{% endraw %}
 
-* `rdfs:label`
-* `dct:title`
-* `foaf:name`
-* `schema:name`
-* `skos:prefLabel`
+A list of properties that all mean something like 'title' and are used by
+the `title()` and `title_any()` filters.
 
 <a id="jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES"></a>
 
 ### DEFAULT\_DESCRIPTION\_PROPERTIES
 
-A list of properties that all mean something like 'description' and are used by
-the `description()` and `description_any()` filters. The properties are:
+{% raw %}
+```python
+DEFAULT_DESCRIPTION_PROPERTIES = [
+    RDFS.comment, DCT.description, SCHEMA.description
+]
+```
+{% endraw %}
 
-* `rdfs:comment`
-* `dct:description`
-* `schema:description`
+A list of properties that all mean something like 'description' and are used by
+the `description()` and `description_any()` filters.
 
 <a id="jinjardf.rdf_filters.RDFFilters"></a>
 

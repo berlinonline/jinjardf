@@ -1,4 +1,4 @@
-pydoc_config = '{ renderer: { type: markdown, render_toc: true, header_level_by_type: {"Method": 3, "Function": 3, "Variable": 3 } } }'
+pydoc_config = '{ renderer: { type: markdown, data_code_block: true, data_expression_maxlength: 200, render_toc: true, header_level_by_type: {"Method": 3, "Function": 3, "Variable": 3 } } }'
 
 test:
 	coverage run --source=berlinonline.jinjardf -m pytest -vv -s berlinonline/jinjardf/tests && coverage html
@@ -51,7 +51,10 @@ temp/site_generator.md: temp
 temp/%.with_links.md: temp/%.md
 	python bin/markdown_links.py --input $< > $@
 
-doc/%.md: temp/%.with_links.md doc
+temp/%.no_toc_root.md: temp/%.with_links.md
+	python bin/delete_toc_root.py --input $< > $@
+
+doc/%.md: temp/%.no_toc_root.md doc
 	python bin/raw_codeblocks.py --input $< > $@
 
 documentation: doc/rdf_filters.md doc/rdf_environment.md doc/site_generator.md

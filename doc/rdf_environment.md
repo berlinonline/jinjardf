@@ -1,6 +1,5 @@
 # Table of Contents
 
-* [jinjardf.rdf\_environment](#jinjardf.rdf_environment)
   * [RDFEnvironment](#jinjardf.rdf_environment.RDFEnvironment)
 
 <a id="jinjardf.rdf_environment"></a>
