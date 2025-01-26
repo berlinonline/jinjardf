@@ -1,3 +1,20 @@
+# Table of Contents
+
+* [jinjardf.site\_generator](#jinjardf.site_generator)
+  * [DEFAULT\_RESTRICTION](#jinjardf.site_generator.DEFAULT_RESTRICTION)
+  * [DEFAULT\_PREFIXES](#jinjardf.site_generator.DEFAULT_PREFIXES)
+  * [DEFAULT\_DATASET\_PATH](#jinjardf.site_generator.DEFAULT_DATASET_PATH)
+  * [DEFAULT\_TEMPLATE\_PATH](#jinjardf.site_generator.DEFAULT_TEMPLATE_PATH)
+  * [DEFAULT\_TEMPLATE](#jinjardf.site_generator.DEFAULT_TEMPLATE)
+  * [DEFAULT\_OUTPUT\_PATH](#jinjardf.site_generator.DEFAULT_OUTPUT_PATH)
+  * [SiteGenerator](#jinjardf.site_generator.SiteGenerator)
+    * [read\_config](#jinjardf.site_generator.SiteGenerator.read_config)
+    * [extract\_resources](#jinjardf.site_generator.SiteGenerator.extract_resources)
+    * [compute\_resource\_class\_index](#jinjardf.site_generator.SiteGenerator.compute_resource_class_index)
+    * [compute\_class\_superclass\_index](#jinjardf.site_generator.SiteGenerator.compute_class_superclass_index)
+    * [compute\_resource\_template\_index](#jinjardf.site_generator.SiteGenerator.compute_resource_template_index)
+  * [CustomHandler](#jinjardf.site_generator.CustomHandler)
+
 <a id="jinjardf.site_generator"></a>
 
 # jinjardf.site\_generator

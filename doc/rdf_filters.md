@@ -1,3 +1,27 @@
+# Table of Contents
+
+* [jinjardf.rdf\_filters](#jinjardf.rdf_filters)
+  * [DEFAULT\_TITLE\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES)
+  * [DEFAULT\_DESCRIPTION\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES)
+  * [RDFFilters](#jinjardf.rdf_filters.RDFFilters)
+    * [rdf\_get](#jinjardf.rdf_filters.RDFFilters.rdf_get)
+    * [toPython](#jinjardf.rdf_filters.RDFFilters.toPython)
+    * [is\_iri](#jinjardf.rdf_filters.RDFFilters.is_iri)
+    * [is\_bnode](#jinjardf.rdf_filters.RDFFilters.is_bnode)
+    * [is\_resource](#jinjardf.rdf_filters.RDFFilters.is_resource)
+    * [is\_literal](#jinjardf.rdf_filters.RDFFilters.is_literal)
+    * [rdf\_property](#jinjardf.rdf_filters.RDFFilters.rdf_property)
+    * [rdf\_property\_any](#jinjardf.rdf_filters.RDFFilters.rdf_property_any)
+    * [rdf\_inverse\_property](#jinjardf.rdf_filters.RDFFilters.rdf_inverse_property)
+    * [rdf\_inverse\_property\_any](#jinjardf.rdf_filters.RDFFilters.rdf_inverse_property_any)
+    * [sparql\_query](#jinjardf.rdf_filters.RDFFilters.sparql_query)
+    * [statements\_as\_subject](#jinjardf.rdf_filters.RDFFilters.statements_as_subject)
+    * [statements\_as\_object](#jinjardf.rdf_filters.RDFFilters.statements_as_object)
+    * [get\_text](#jinjardf.rdf_filters.RDFFilters.get_text)
+    * [title](#jinjardf.rdf_filters.RDFFilters.title)
+    * [description](#jinjardf.rdf_filters.RDFFilters.description)
+    * [relative\_uri](#jinjardf.rdf_filters.RDFFilters.relative_uri)
+
 <a id="jinjardf.rdf_filters"></a>
 
 # jinjardf.rdf\_filters
