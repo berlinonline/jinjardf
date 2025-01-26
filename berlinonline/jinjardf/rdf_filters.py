@@ -72,13 +72,7 @@ DEFAULT_TITLE_PROPERTIES = [
     SKOS.prefLabel,
 ]
 """A list of properties that all mean something like 'title' and are used by
-the `title()` and `title_any()` filters. The properties are:
-
-* `rdfs:label`
-* `dct:title`
-* `foaf:name`
-* `schema:name`
-* `skos:prefLabel`
+the `title()` and `title_any()` filters.
 """
 
 DEFAULT_DESCRIPTION_PROPERTIES = [
@@ -87,11 +81,7 @@ DEFAULT_DESCRIPTION_PROPERTIES = [
     SCHEMA.description
 ]
 """A list of properties that all mean something like 'description' and are used by
-the `description()` and `description_any()` filters. The properties are:
-
-* `rdfs:comment`
-* `dct:description`
-* `schema:description`
+the `description()` and `description_any()` filters.
 """
 
 class RDFFilters(Extension):
