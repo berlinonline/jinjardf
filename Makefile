@@ -1,4 +1,4 @@
-pydoc_config = '{ renderer: { type: markdown, data_code_block: true, data_expression_maxlength: 200, render_toc: true, header_level_by_type: {"Method": 3, "Function": 3, "Variable": 3 } } }'
+pydoc_config = '{ renderer: { type: markdown, data_code_block: true, data_expression_maxlength: 500, render_toc: true, header_level_by_type: {"Method": 3, "Function": 3, "Variable": 3 } } }'
 
 test:
 	coverage run --source=berlinonline.jinjardf -m pytest -vv -s berlinonline/jinjardf/tests && coverage html

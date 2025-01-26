@@ -78,7 +78,7 @@ the `title()` and `title_any()` filters.
 DEFAULT_DESCRIPTION_PROPERTIES = [
     RDFS.comment,
     DCT.description,
-    SCHEMA.description
+    SCHEMA.description,
 ]
 """A list of properties that all mean something like 'description' and are used by
 the `description()` and `description_any()` filters.
