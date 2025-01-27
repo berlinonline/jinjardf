@@ -95,7 +95,7 @@ class RDFFilters(Extension):
         super().__init__(environment)
 
         environment.filters['rdf_get'] = self.rdf_property
-        environment.filters['toPython'] = self.toPython
+        environment.filters['to_python'] = self.to_python
         environment.filters['is_iri'] = self.is_iri
         environment.filters['is_bnode'] = self.is_bnode
         environment.filters['is_resource'] = self.is_resource
@@ -147,7 +147,7 @@ class RDFFilters(Extension):
         return URIRef(iri)
 
     @staticmethod
-    def toPython(node: Node):
+    def to_python(node: Node):
         """Returns an appropriate python datatype for the rdflib type of `node`, or `None` if
         `node` is `None`. This is useful if we want to compare the value of a literal
         with a Jinja (Python) object, such as a String.
@@ -157,7 +157,7 @@ class RDFFilters(Extension):
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
 
         ```jinja
-        {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
+        {% set gender = node | rdf_property_any(SCHEMA.gender) | to_python %}
         {% if gender == 'female' %}
             weiblich
         {% elif gender == 'male' %}
@@ -906,6 +906,8 @@ class RDFFilters(Extension):
         <a href="/jinja-rdf-demo/example/ducks/DellaDuck">Della Duck</a>
         ```
 
+        ---
+
         - `res`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         - `environment.resource_prefix`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
         - `environment.site_url`: http://localhost:8000
@@ -919,6 +921,8 @@ class RDFFilters(Extension):
         ```html
         <a href="/DellaDuck">Della Duck</a>
         ```
+
+        ---
 
         - `res`: https://schema.org/Person
         - `environment.resource_prefix`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/

@@ -58,7 +58,7 @@ class TestToPython(object):
         }
     ])
     def test_return_value_has_correct_type(self, data):
-        value = RDFFilters.toPython(data['node'])
+        value = RDFFilters.to_python(data['node'])
         assert value == data['expected']
         assert isinstance(value, data['type'])
 

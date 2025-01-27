@@ -4,7 +4,7 @@
   * [DEFAULT\_DESCRIPTION\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES)
   * [RDFFilters](#jinjardf.rdf_filters.RDFFilters)
     * [rdf\_get](#jinjardf.rdf_filters.RDFFilters.rdf_get)
-    * [toPython](#jinjardf.rdf_filters.RDFFilters.toPython)
+    * [to\_python](#jinjardf.rdf_filters.RDFFilters.to_python)
     * [is\_iri](#jinjardf.rdf_filters.RDFFilters.is_iri)
     * [is\_bnode](#jinjardf.rdf_filters.RDFFilters.is_bnode)
     * [is\_resource](#jinjardf.rdf_filters.RDFFilters.is_resource)
@@ -176,14 +176,14 @@ want to compare the IRI with another URIRef.
 
 - `URIRef` - The returned resource.
 
-<a id="jinjardf.rdf_filters.RDFFilters.toPython"></a>
+<a id="jinjardf.rdf_filters.RDFFilters.to_python"></a>
 
-### toPython
+### to\_python
 
 {% raw %}
 ```python
 @staticmethod
-def toPython(node: Node)
+def to_python(node: Node)
 ```
 {% endraw %}
 
@@ -198,7 +198,7 @@ with a Jinja (Python) object, such as a String.
   
 {% raw %}
 ```jinja
-{% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
+{% set gender = node | rdf_property_any(SCHEMA.gender) | to_python %}
 {% if gender == 'female' %}
     weiblich
 {% elif gender == 'male' %}
