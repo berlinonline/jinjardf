@@ -1,29 +1,25 @@
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [jinjardf.rdf\_filters](#jinjardfrdf_filters)
-  - [Filter Parameters](#filter-parameters)
-  - [Examples](#examples)
-    - [DEFAULT\_TITLE\_PROPERTIES](#default_title_properties)
-    - [DEFAULT\_DESCRIPTION\_PROPERTIES](#default_description_properties)
-  - [RDFFilters Objects](#rdffilters-objects)
-    - [rdf\_get](#rdf_get)
-    - [toPython](#topython)
-    - [is\_iri](#is_iri)
-    - [is\_bnode](#is_bnode)
-    - [is\_resource](#is_resource)
-    - [is\_literal](#is_literal)
-    - [rdf\_property](#rdf_property)
-    - [rdf\_property\_any](#rdf_property_any)
-    - [rdf\_inverse\_property](#rdf_inverse_property)
-    - [rdf\_inverse\_property\_any](#rdf_inverse_property_any)
-    - [sparql\_query](#sparql_query)
-    - [statements\_as\_subject](#statements_as_subject)
-    - [statements\_as\_object](#statements_as_object)
-    - [get\_text](#get_text)
-    - [title](#title)
-    - [description](#description)
-    - [relative\_uri](#relative_uri)
+  * [DEFAULT\_TITLE\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES)
+  * [DEFAULT\_DESCRIPTION\_PROPERTIES](#jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES)
+  * [RDFFilters](#jinjardf.rdf_filters.RDFFilters)
+    * [rdf\_get](#jinjardf.rdf_filters.RDFFilters.rdf_get)
+    * [toPython](#jinjardf.rdf_filters.RDFFilters.toPython)
+    * [is\_iri](#jinjardf.rdf_filters.RDFFilters.is_iri)
+    * [is\_bnode](#jinjardf.rdf_filters.RDFFilters.is_bnode)
+    * [is\_resource](#jinjardf.rdf_filters.RDFFilters.is_resource)
+    * [is\_literal](#jinjardf.rdf_filters.RDFFilters.is_literal)
+    * [rdf\_property](#jinjardf.rdf_filters.RDFFilters.rdf_property)
+    * [rdf\_property\_any](#jinjardf.rdf_filters.RDFFilters.rdf_property_any)
+    * [rdf\_inverse\_property](#jinjardf.rdf_filters.RDFFilters.rdf_inverse_property)
+    * [rdf\_inverse\_property\_any](#jinjardf.rdf_filters.RDFFilters.rdf_inverse_property_any)
+    * [sparql\_query](#jinjardf.rdf_filters.RDFFilters.sparql_query)
+    * [statements\_as\_subject](#jinjardf.rdf_filters.RDFFilters.statements_as_subject)
+    * [statements\_as\_object](#jinjardf.rdf_filters.RDFFilters.statements_as_object)
+    * [get\_text](#jinjardf.rdf_filters.RDFFilters.get_text)
+    * [title](#jinjardf.rdf_filters.RDFFilters.title)
+    * [description](#jinjardf.rdf_filters.RDFFilters.description)
+    * [relative\_uri](#jinjardf.rdf_filters.RDFFilters.relative_uri)
 
 <a id="jinjardf.rdf_filters"></a>
 
@@ -145,14 +141,15 @@ When used as a Jinja filter, the value passed is the `iri`.
 This is useful when we want to use use rdflib's API for URIRefs, or if we
 want to compare the IRI with another URIRef.
 
-**Usage in a template**:
+**Examples**:
 
-The (somewhat contrieved) example is using `rdf_get` to turn a string into
-a URIRef object, so what we can use the `n3()` function on it.
-([https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3))
-
-
-
+  
+  (Usage in a template)
+  
+  The (somewhat contrieved) example is using `rdf_get` to turn a string into
+  a URIRef object, so what we can use the `n3()` function on it.
+  ([https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3))
+  
 {% raw %}
 ```jinja
 {% set iri_string = 'https://example.com/foo/bar' %}
@@ -160,11 +157,15 @@ a URIRef object, so what we can use the `n3()` function on it.
 {{ iri.n3() }}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 <https://example.com/foo/bar>
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -190,12 +191,13 @@ Returns an appropriate python datatype for the rdflib type of `node`, or `None` 
 `node` is `None`. This is useful if we want to compare the value of a literal
 with a Jinja (Python) object, such as a String.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% set gender = node | rdf_property_any(SCHEMA.gender) | toPython %}
@@ -208,11 +210,15 @@ with a Jinja (Python) object, such as a String.
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 weiblich
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -236,12 +242,13 @@ def is_iri(node: Node) -> bool
 
 Return `True` if `node` is an IRI (URI) resource, `False` if not.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% if node | is_iri %}
@@ -249,11 +256,15 @@ Return `True` if `node` is an IRI (URI) resource, `False` if not.
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is an IRI.
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -277,12 +288,13 @@ def is_bnode(node: Node) -> bool
 
 Return `True` if `node` is a blank node resource, `False` if not.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% if node | is_bnode %}
@@ -292,11 +304,15 @@ Return `True` if `node` is a blank node resource, `False` if not.
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is not a Bnode.
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -320,12 +336,13 @@ def is_resource(node: Node) -> bool
 
 Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% if node | is_resource %}
@@ -333,11 +350,15 @@ Return `True` if `node` is a resource (either IRI or bnode), `False` if not.
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 https://example.com/foo/bar is a resource.
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -361,12 +382,13 @@ def is_literal(node: Node) -> bool
 
 Return `True` if `node` is a literal, `False` if not.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% set title = node | title_any(language=['en']) %}
@@ -374,12 +396,16 @@ Return `True` if `node` is a literal, `False` if not.
 '{{ title }}' is a literal: {% title | is_literal %}<br/>
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is a literal: False
 'Della Duck' is a literal: True
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -411,12 +437,13 @@ If an optional language code is provided, the results will be filtered to only
 contain literals with that language.
 When used as a Jinja filter, the value passed is the `subject`.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 schema:names: {{ node | rdf_property(SCHEMA.name) }}<br/>
@@ -424,6 +451,9 @@ Japanese schema:names: {{ node | rdf_property(SCHEMA.name, 'ja') }}<br/>
 rdfs:labels: {{ node | rdf_property(RDFS.label) }}<br/>
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 schema:names: [ 'Della And', 'Della Duck', 'Ντέλλα Ντακ', 'Della Duck', 'Bella Pato', 'デラ・ダック', … ]
@@ -431,6 +461,7 @@ Japanese schema:names: [ 'デラ・ダック' ]
 rdfs:labels: []
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -465,12 +496,13 @@ If an optional language code is provided, only a literal with that language will
 be returned.
 When used as a Jinja filter, the value passed is the `subject`.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 any schema:name: {{ node | rdf_property_any(SCHEMA.name) }}<br/>
@@ -478,6 +510,9 @@ any Japanese schema:name: {{ node | rdf_property_any(SCHEMA.name, 'ja') }}<br/>
 any rdfs:label: {{ node | rdf_property_any(RDFS.label) }}<br/>
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 any schema:name: 'Della And'
@@ -485,6 +520,7 @@ any Japanese schema:name: 'デラ・ダック'
 any rdfs:label: None
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -516,12 +552,13 @@ def rdf_inverse_property(environment: RDFEnvironment,
 Return the subjects for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {# Find Della's children by using `hasParent` in the inverse direction. #}
@@ -534,6 +571,9 @@ Della's children:
 </ul>
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 Della's children:
@@ -544,6 +584,7 @@ Della's children:
 </ul>
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -574,12 +615,13 @@ def rdf_inverse_property_any(environment: RDFEnvironment,
 Return one arbitrary subject for the pattern (`SUBJ`, `predicate`, `object`).
 When used as a Jinja filter, the value passed is the `object`.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {# Pick any of Della's children by using `hasParent` in the inverse direction. #}
@@ -587,11 +629,15 @@ When used as a Jinja filter, the value passed is the `object`.
 Della's child: {{ child }}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 Della's child: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Huey
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -630,12 +676,13 @@ resultset, where each result contains the bindings for the selected variables
 (in the case of a SELECT query).
 See [https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.](https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.)
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
 {% raw %}
 ```jinja
 {% set sibling_query = '''
@@ -656,6 +703,9 @@ WHERE {
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 <ul>
@@ -663,6 +713,7 @@ WHERE {
 </ul>
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -692,15 +743,17 @@ def statements_as_subject(environment: RDFEnvironment,
 Return all statements/triples in the graph where the current resource as
 passed to the filter is the subject.
 
-**Usage in a template**:
+**Examples**:
 
-- `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/)
-
-
-
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/)
+  
 {% raw %}
 ```jinja
 Statements with literal objects about {{ node }}:
+{% set statements = node | statements_as_subject(as_list=true) %}
 {%- if statements | length > 0 %}
     <table>
         <tr>
@@ -719,6 +772,9 @@ Statements with literal objects about {{ node }}:
 {% endif %}
 ```
 {% endraw %}
+  
+  Output:
+  
 {% raw %}
 ```html
 Statements with literal objects about https://berlinonline.github.io/jinja-rdf-demo/example/ducks/:
@@ -746,6 +802,7 @@ Statements with literal objects about https://berlinonline.github.io/jinja-rdf-d
 </table>
 ```
 {% endraw %}
+  
 
 **Arguments**:
 
@@ -775,6 +832,60 @@ def statements_as_object(environment: RDFEnvironment,
 
 Return all statements/triples in the graph where the current resource as
 passed to the filter is the object.
+
+**Examples**:
+
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
+{% raw %}
+```jinja
+Statements in the graph where {{ node }} is the object:
+{% set statements_as_object = node | statements_as_object(as_list=true) %}
+{%- if statements | length > 0 %}
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Property</th>
+        </tr>
+        {% for s, p, o in statements -%}
+            <tr>
+                <td>{{ s }}</td>
+                <td>{{ p }}</td>
+            </tr>
+        {%- endfor %}
+    </table>
+```
+{% endraw %}
+  
+  Output:
+  
+{% raw %}
+```html
+Statements in the graph where https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck is the object:
+<table>
+    <tr>
+        <th>Subject</th>
+        <th>Property</th>
+    </tr>
+    <tr>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Dewey</td>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/vocab/hasParent</td>
+    </tr>
+    <tr>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Huey</td>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/vocab/hasParent</td>
+    </tr>
+    <tr>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/Louie</td>
+        <td>https://berlinonline.github.io/jinja-rdf-demo/example/ducks/vocab/hasParent</td>
+    </tr>
+</table>
+```
+{% endraw %}
+  
 
 **Arguments**:
 
@@ -810,6 +921,10 @@ and return them as a list. This is e.g. used to get all titles, or all descripti
 by passing a list of desired title-properties (`rdfs:label`, `dct:title`, `schema:name` etc.) or
 description-properties (`rdfs:comment`, `dct:description`, `schema:description` etc.).
 
+Most likely, this filter will not be used directly in a template. Instead, [`title`](#jinjardf.rdf_filters.RDFFilters.title) or [`description`](#jinjardf.rdf_filters.RDFFilters.description)
+will probably be used with the [`DEFAULT_TITLE_PROPERTIES`](#jinjardf.rdf_filters.DEFAULT_TITLE_PROPERTIES) and
+[`DEFAULT_DESCRIPTION_PROPERTIES`](#jinjardf.rdf_filters.DEFAULT_DESCRIPTION_PROPERTIES).
+
 **Arguments**:
 
 - `environment` _RDFEnvironment_ - the RDFEnvironment
@@ -842,6 +957,48 @@ def title(environment: RDFEnvironment,
 
 Find all titles (as defined by in the `environment`) for all languages specified and return them
 as a list.
+
+**Examples**:
+
+  
+
+**Examples**:
+
+  
+  (Usage in a template)
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck)
+  
+{% raw %}
+```jinja
+{%set names = node | title(languages=['de', 'en', 'fi', 'ko']) %}
+<h2>Names in different languages for {{ node }}</h2>
+{% if names %}
+    <ul>
+    {% for name in names %}
+        <li>"{{ name }}" ({{ name.language }})</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+```
+{% endraw %}
+  
+  yigga!
+  
+  Output:
+  
+{% raw %}
+```html
+<h2>Names in different languages for https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck</h2>
+<ul>
+    <li>"Della Duck" (de)</li>
+    <li>"Della Duck" (en)</li>
+    <li>"Della Ankka" (fi)</li>
+    <!-- there is no Korean name in the data -->
+</ul>
+```
+{% endraw %}
+  
 
 **Arguments**:
 
