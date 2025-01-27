@@ -121,8 +121,6 @@ class RDFFilters(Extension):
 
         Examples:
         
-        (Usage in a template)
-
         The (somewhat contrieved) example is using `rdf_get` to turn a string into
         a URIRef object, so what we can use the `n3()` function on it.
         (https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.term.URIRef.n3)
@@ -155,8 +153,6 @@ class RDFFilters(Extension):
         with a Jinja (Python) object, such as a String.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
 
@@ -194,8 +190,6 @@ class RDFFilters(Extension):
 
         Examples:
 
-        (Usage in a template)
-
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
         ```jinja
@@ -223,8 +217,6 @@ class RDFFilters(Extension):
         """Return `True` if `node` is a blank node resource, `False` if not.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
@@ -256,8 +248,6 @@ class RDFFilters(Extension):
 
         Examples:
 
-        (Usage in a template)
-
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
         ```jinja
@@ -285,8 +275,6 @@ class RDFFilters(Extension):
         """Return `True` if `node` is a literal, `False` if not.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
@@ -320,8 +308,6 @@ class RDFFilters(Extension):
         When used as a Jinja filter, the value passed is the `subject`.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
@@ -378,8 +364,6 @@ class RDFFilters(Extension):
 
         Examples:
 
-        (Usage in a template)
-
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
         ```jinja
@@ -415,8 +399,6 @@ class RDFFilters(Extension):
         When used as a Jinja filter, the value passed is the `object`.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
@@ -463,8 +445,6 @@ class RDFFilters(Extension):
 
         Examples:
 
-        (Usage in a template)
-
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
         ```jinja
@@ -508,8 +488,6 @@ class RDFFilters(Extension):
         See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
 
@@ -561,8 +539,6 @@ class RDFFilters(Extension):
         passed to the filter is the subject.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
 
@@ -638,8 +614,6 @@ class RDFFilters(Extension):
         passed to the filter is the object.
 
         Examples:
-
-        (Usage in a template)
 
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
         
@@ -717,7 +691,7 @@ class RDFFilters(Extension):
             environment (RDFEnvironment): the RDFEnvironment
             resource (IdentifiedNode): the resource for which to find literals
             properties (list): the list of properties to use
-            languages (list, optional): list of language codes. Defaults to `[]`. 
+            languages (list, optional): list of language codes. Defaults to `[]`. `UNTAGGED` will always be added.
             return_first (bool, optional): If `True`, only return the first literal found. Defaults to `False`.
             default (str, optional): If no matching literals are found, return this. Defaults to `None`.
 
@@ -755,14 +729,10 @@ class RDFFilters(Extension):
 
         Examples:
 
-        Examples:
-
-        (Usage in a template)
-
         - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
 
         ```jinja
-        {%set names = node | title(languages=['de', 'en', 'fi', 'ko']) %}
+        {% set names = node | title(languages=['de', 'en', 'fi', 'ko']) %}
         <h2>Names in different languages for {{ node }}</h2>
         {% if names %}
             <ul>
@@ -772,8 +742,6 @@ class RDFFilters(Extension):
             </ul>
         {% endif %}
         ```
-
-        yigga!
 
         Output:
 
@@ -789,10 +757,10 @@ class RDFFilters(Extension):
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
-            resource (IdentifiedNode): the resource for which to find title
-            languages (list): list of language codes
+            resource (IdentifiedNode): the resource for which to find the title
+            languages (list): List of language codes. Defaults to []. `UNTAGGED` will always be added.
             return_first (bool, optional): If True, only return the first title found. Defaults to False.
-            default (str): If no matching titles are found, return this.
+            default (str): If no matching titles are found, return this. Defaults to `None`.
 
         Returns:
             list: the list of titles found
@@ -808,6 +776,31 @@ class RDFFilters(Extension):
     @staticmethod
     @pass_environment
     def title_any(environment: RDFEnvironment, resource: IdentifiedNode, languages: list=[], default: str=None) -> Literal:
+        """Like #title, but returns the first title found instead of a list of all titles.
+
+        Examples:
+
+        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+
+        ```jinja
+        <h1>{{ node | title_any(languages=['de', 'en'], default='(Unbekannt)') }}</h1>
+        ```
+
+        Output:
+
+        ```html
+        <h1>Della Duck</h1>
+        ```
+
+        Args:
+            environment (RDFEnvironment): the RDFEnvironment
+            resource (IdentifiedNode): the resource for which to find the title
+            languages (list, optional): List of languages. Defaults to []. `UNTAGGED` will always be added.
+            default (str, optional): If no matching title is found, return this. Defaults to `None`.
+
+        Returns:
+            Literal: _description_
+        """
         return RDFFilters.title(environment=environment, resource=resource, languages=languages, return_first=True, default=default)
     
     @staticmethod
@@ -816,12 +809,37 @@ class RDFFilters(Extension):
         """Find all descriptions (as defined by in the `environment`) for all languages specified and return them
         as a list.
 
+        Examples:
+
+        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+
+        ```jinja
+        {% set descriptions = node | description(languages=['de', 'en', 'fi', 'ko'], default='No description found.') %}
+        <h2>Descriptions in different languages for {{ node }}</h2>
+        {% if descriptions %}
+            <ul>
+            {% for description in descriptions %}
+                <li>{{ description }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        ```
+
+        Output:
+
+        ```html
+        <h2>Descriptions in different languages for https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck</h2>
+        <ul>
+            <li>No description found.</li>
+        </ul>
+        ```
+
         Args:
             environment (RDFEnvironment): the RDFEnvironment
-            resource (IdentifiedNode): the resource for which to find title
-            languages (list): list of language codes
-            return_first (bool, optional): If True, only return the first title found. Defaults to False.
-            default (str): If no matching titles are found, return this.
+            resource (IdentifiedNode): the resource for which to find the description
+            languages (list): List of language codes, defaults to []. `UNTAGGED` will always be added.
+            return_first (bool, optional): If True, only return the first description found. Defaults to False.
+            default (str): If no matching descriptions are found, return this. Defaults to `None`.
 
         Returns:
             list: the list of titles found
@@ -837,12 +855,84 @@ class RDFFilters(Extension):
     @staticmethod
     @pass_environment
     def description_any(environment: RDFEnvironment, resource: IdentifiedNode, languages: list=[], default: str=None) -> Literal:
+        """Like #description, but return the first description found instead of all descriptions.
+
+        Examples:
+
+        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+
+        ```jinja
+        <p>{{ node | description_any(languages=['de', 'en'], default='No description found.') }}</p>
+        ```
+
+        Output:
+
+        ```html
+        <p>Excerpt of the family tree of the fictional character Donald Duck. Sources for the family tree are Wikipedia, for names in different languages Wikidata.</p>
+        <!-- there was no description in German, so the English one was chosen. -->
+        ```
+
+        Args:
+            environment (RDFEnvironment): the RDFEnvironment
+            resource (IdentifiedNode): the resource for which to find the description
+            languages (list, optional): List of language codes, defaults to []. `UNTAGGED` will always be added.
+            default (str, optional): If no matching descriptions are found. Defaults to `None`.
+
+        Returns:
+            Literal: _description_
+        """
         return RDFFilters.description(environment=environment, resource=resource, languages=languages, return_first=True, default=default)
 
     @staticmethod
     @pass_environment
     def relative_uri(environment: RDFEnvironment, resource: IdentifiedNode) -> str:
-        """Returns the URI of this resource relative to the site URL.
+        """Returns the URI of this resource relative to the site URL. This is helpful if you want
+        links that work both on the actual site (at the URL that is part of the resource URI) 
+        _and_ on a local development server (at e.g. localhost:8000).
+
+        Examples:
+
+        - `res`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        - `environment.resource_prefix`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+        - `environment.site_url`: https://berlinonline.github.io/
+
+        ```jinja
+        <a href="{{ res | relative_url }}">{{ res | title_any(languages=['de', 'en']) }}</a>
+        ```
+
+        Output:
+
+        ```html
+        <a href="/jinja-rdf-demo/example/ducks/DellaDuck">Della Duck</a>
+        ```
+
+        - `res`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DellaDuck
+        - `environment.resource_prefix`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+        - `environment.site_url`: http://localhost:8000
+
+        ```jinja
+        <a href="{{ res | relative_url }}">{{ res | title_any(languages=['de', 'en']) }}</a>
+        ```
+
+        Output:
+
+        ```html
+        <a href="/DellaDuck">Della Duck</a>
+        ```
+
+        - `res`: https://schema.org/Person
+        - `environment.resource_prefix`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/
+        - `environment.site_url`: http://localhost:8000
+
+        ```jinja
+        <a href="{{ res | relative_url }}">{{ res | title_any(languages=['de', 'en'], default=res) }}</a>
+        ```
+
+        Output:
+
+        ```html
+        <a href="https://schema.org/Person">https://schema.org/Person</a>
+        ```
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
