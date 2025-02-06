@@ -1,5 +1,7 @@
 import pytest
-from berlinonline.jinjardf.helper import replace_curies, split_curie, BadCurieException
+
+from berlinonline.jinjardf.helper import BadCurieException, replace_curies, split_curie
+
 
 class TestReplaceCuries(object):
 
