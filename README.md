@@ -12,6 +12,7 @@ Jinja-RDF provides the tools necessary to build static sites for RDF graphs:
   * iterates through a configurable part of the RDF graph,
   * maps RDF resources to Jinja templates based on their class, and
   * outputs static HTML files for each resource.
+* a [theme class](https://berlinonline.github.io/jinjardf/doc/theme) to facilitate installing themes of templates for the site generator
 
 ## Why?
 

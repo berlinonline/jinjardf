@@ -1,5 +1,7 @@
 import os
 import pathlib
+from posixpath import dirname
+import shutil
 
 import pytest
 from rdflib import Namespace
@@ -26,7 +28,9 @@ def duck_environment():
     site_url = 'https://berlinonline.github.io/jinja-rdf/example/ducks'
     resource_prefix = site_url + '/'
     environment = create_environment(filename='ducks.ttl', resource_prefix=resource_prefix, site_url=site_url)
+
     yield environment
+
     # empty the graph
     environment.graph.remove( (None, None, None) )
 
@@ -38,7 +42,25 @@ def literal_environment():
     site_url = 'https://berlinonline.github.io/jinja-rdf/example/literals'
     resource_prefix = site_url + '/'
     environment = create_environment(filename='literals.ttl', resource_prefix=resource_prefix, site_url=site_url)
+
     yield environment
+
     # empty the graph
     environment.graph.remove( (None, None, None) )
+
+@pytest.fixture
+def temporary_template_folder():
+    """Fixture to create a temporary template folder and delete it after
+    the test."""
+    current_dir = dirname(os.path.realpath(__file__))
+    template_folder_path = os.path.join(current_dir, "_temp_templates")
+
+    # create the template folder
+    if not os.path.exists(template_folder_path):
+        os.makedirs(template_folder_path)
+
+    yield template_folder_path
+
+    # delete the template folder
+    shutil.rmtree(template_folder_path)
 
