@@ -1,56 +1,49 @@
-from importlib.resources.abc import Traversable
-import os
-import sys
-from abc import ABC
-from importlib.resources import files
 import logging
-from posixpath import dirname
+import os
+from importlib.resources import files
 from pathlib import Path
+
+from berlinonline.jinjardf.helper import is_valid_package_path
 
 LOG = logging.getLogger(__name__)
 
 
-class Theme(ABC):
+class Theme(object):
     """A theme contains templates for use with the JinjaRDF site builder.
-    `Theme` is an abstract base class and should be sub-classed for concrete
-    themes.
 
     Attributes:
-        name (str): A human-readable name of the theme. Default is the class name.
-        module_path (str): The complete path to the theme in dot-notation.
-        dir_path (importlib.resources.abc.Traversable): The location of this theme.
-        template_path (str): The template path relative to the theme.
-        Defaults to 'template'.
+        package (str): the full dotted path of the theme's package, e.g. 'foo.bar.basetheme'
+        name (str): A human-readable name of the theme. Default is the theme's subpackage,
+        e.g. 'basetheme'.
+        template_path (str): The template path relative to the theme's package.
+        Defaults to 'templates'.
     """
+    package: str
     name: str
-    module_path: str
-    dir_path: Traversable
     template_path: str
 
-    def __init__(self, name: str=None, template_path: str='templates'):
+    def __init__(self, package: str, name: str=None, template_path: str='templates'):
         """Initialize the theme
 
         Args:
-            name (str, optional): Optional human-readable theme name. If none, then theme.name
-            will be the name of the theme class. Defaults to None.
-            template_path (str, optional): The template path relative to the theme class (this class).
+            package (str): the full dotted path of the theme's package, e.g. 'foo.bar.basetheme'
+            name (str): Optional human-readable theme name. If None, then `theme.name`
+            will be the name of the theme's subpackage (e.g. 'basetheme').
+            Defaults to None.
+            template_path (str, optional): The template path relative to the theme's package.
             Defaults to 'templates'.
         """
-        calling_class = type(self)
-        modulename = calling_class.__module__
-        classname = calling_class.__qualname__
-        self.module_path = modulename + '.' + classname
 
-        current_dir = dirname(sys.modules[modulename].__file__)
-        template_folder_path = os.path.join(current_dir, template_path)
-        self.template_path = template_folder_path
-
+        if is_valid_package_path(package):
+            self.package = package
+        else:
+            raise ValueError(f"'{package}' is not a valid package name")
+        
         if not name:
-            name = classname
+            name = package.split('.').pop()
         self.name = name
 
-        # where is the concrete subclass located?
-        self.dir_path = files(modulename)
+        self.template_path = template_path
 
     def copy_templates(self, target_folder: str) -> list:
         """Copy the theme's templates to a subfolder in the site generator's
@@ -63,10 +56,11 @@ class Theme(ABC):
             list: the names of the copied templates
         """
         copied_templates = []
-        for file in self.dir_path.iterdir():
-            if str(file) == str(self.template_path):
-                LOG.debug(f" copying templates from {self.template_path}")
-                theme_template_folder = os.path.join(target_folder, self.module_path)
+        templates_path = files(self.package) / self.template_path
+        for file in files(self.package).iterdir():
+            if file == templates_path:
+                LOG.debug(f" copying templates from {templates_path}")
+                theme_template_folder = os.path.join(target_folder, self.package)
                 if not os.path.exists(theme_template_folder):
                     os.makedirs(theme_template_folder)
                 for template in file.iterdir():

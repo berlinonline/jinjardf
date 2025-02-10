@@ -26,3 +26,15 @@ def split_curie(curie: str) -> tuple[str, str]:
 
 class BadCurieException(Exception):
     pass
+
+def is_valid_package_path(package_path: str) -> bool:
+    """Ensure that `package_path` is valid: it must be valid identifiers
+    separated by `.`.
+
+    Args:
+        package_path (str): the package path to validate, e.g. 'foo.bar.baz'
+
+    Returns:
+        bool: True is the path is valid, False if not
+    """
+    return all(part.isidentifier() for part in package_path.split("."))

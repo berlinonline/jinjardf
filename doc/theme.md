@@ -14,21 +14,19 @@
 
 {% raw %}
 ```python
-class Theme(ABC)
+class Theme(object)
 ```
 {% endraw %}
 
 A theme contains templates for use with the JinjaRDF site builder.
-`Theme` is an abstract base class and should be sub-classed for concrete
-themes.
 
 **Attributes**:
 
-- `name` _str_ - A human-readable name of the theme. Default is the class name.
-- `module_path` _str_ - The complete path to the theme in dot-notation.
-- `dir_path` _importlib.resources.abc.Traversable_ - The location of this theme.
-- `template_path` _str_ - The template path relative to the theme.
-  Defaults to 'template'.
+- `package` _str_ - the full dotted path of the theme's package, e.g. 'foo.bar.basetheme'
+- `name` _str_ - A human-readable name of the theme. Default is the theme's subpackage,
+  e.g. 'basetheme'.
+- `template_path` _str_ - The template path relative to the theme's package.
+  Defaults to 'templates'.
 
 <a id="jinjardf.theme.Theme.__init__"></a>
 
@@ -36,7 +34,7 @@ themes.
 
 {% raw %}
 ```python
-def __init__(name: str = None, template_path: str = 'templates')
+def __init__(package: str, name: str = None, template_path: str = 'templates')
 ```
 {% endraw %}
 
@@ -44,9 +42,11 @@ Initialize the theme
 
 **Arguments**:
 
-- `name` _str, optional_ - Optional human-readable theme name. If none, then theme.name
-  will be the name of the theme class. Defaults to None.
-- `template_path` _str, optional_ - The template path relative to the theme class (this class).
+- `package` _str_ - the full dotted path of the theme's package, e.g. 'foo.bar.basetheme'
+- `name` _str_ - Optional human-readable theme name. If None, then `theme.name`
+  will be the name of the theme's subpackage (e.g. 'basetheme').
+  Defaults to None.
+- `template_path` _str, optional_ - The template path relative to the theme's package.
   Defaults to 'templates'.
 
 <a id="jinjardf.theme.Theme.copy_templates"></a>
@@ -55,7 +55,7 @@ Initialize the theme
 
 {% raw %}
 ```python
-def copy_templates(target_folder: str)
+def copy_templates(target_folder: str) -> list
 ```
 {% endraw %}
 
@@ -65,4 +65,9 @@ template folder.
 **Arguments**:
 
 - `target_folder` _str_ - the site generator's template folder
+  
+
+**Returns**:
+
+- `list` - the names of the copied templates
 

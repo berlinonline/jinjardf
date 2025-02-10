@@ -1,6 +1,6 @@
 import pytest
 
-from berlinonline.jinjardf.helper import BadCurieException, replace_curies, split_curie
+from berlinonline.jinjardf.helper import BadCurieException, replace_curies, split_curie, is_valid_package_path
 
 
 class TestReplaceCuries(object):
@@ -51,8 +51,7 @@ class TestSplitCurie(object):
             'curie': ':bar',
             'prefix': None,
             'localPart': 'bar'
-        }
-
+        },
     ])
     def test_curie_split_correctly(self, data):
         prefix, localPart = split_curie(data['curie'])
@@ -62,3 +61,38 @@ class TestSplitCurie(object):
     def test_bad_curies_raise_error(self):
         with pytest.raises(BadCurieException):
             split_curie('foobar')
+
+class TestPackagePathValidation(object):
+
+    @pytest.mark.parametrize("data", [
+        {
+            'path': 'foo',
+            'expected': True
+        },
+        {
+            'path': '1foo',
+            'expected': False
+        },
+        {
+            'path': ' foo',
+            'expected': False
+        },
+        {
+            'path': 'foo.bar.baz',
+            'expected': True
+        },
+        {
+            'path': 'foo/bar/baz',
+            'expected': False
+        },
+        {
+            'path': 'foo-bar-baz',
+            'expected': False
+        },
+        {
+            'path': '',
+            'expected': False
+        },
+    ])
+    def test_is_valid_package_path(self, data):
+        assert is_valid_package_path(data['path']) == data['expected']

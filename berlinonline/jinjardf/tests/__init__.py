@@ -63,4 +63,3 @@ def temporary_template_folder():
 
     # delete the template folder
     shutil.rmtree(template_folder_path)
-
