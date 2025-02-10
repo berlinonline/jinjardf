@@ -56,7 +56,6 @@ from rdflib.query import Result
 
 from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 
-logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 DCT = Namespace('http://purl.org/dc/terms/')
 FOAF = Namespace('http://xmlns.com/foaf/0.1/')

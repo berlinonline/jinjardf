@@ -71,7 +71,6 @@ from berlinonline.jinjardf.rdf_filters import RDFFilters
 import progressbar
 
 progressbar.streams.wrap_stderr()
-logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
 DEFAULT_BASEPATH = '/'
