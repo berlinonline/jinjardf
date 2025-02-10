@@ -7,7 +7,6 @@ import logging
 from posixpath import dirname
 from pathlib import Path
 
-logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
 
@@ -53,20 +52,31 @@ class Theme(ABC):
         # where is the concrete subclass located?
         self.dir_path = files(modulename)
 
-    def copy_templates(self, target_folder: str):
+    def copy_templates(self, target_folder: str) -> list:
         """Copy the theme's templates to a subfolder in the site generator's
         template folder.
 
         Args:
             target_folder (str): the site generator's template folder
+
+        Returns:
+            list: the names of the copied templates
         """
+        copied_templates = []
         for file in self.dir_path.iterdir():
             if str(file) == str(self.template_path):
+                LOG.debug(f" copying templates from {self.template_path}")
                 theme_template_folder = os.path.join(target_folder, self.module_path)
                 if not os.path.exists(theme_template_folder):
                     os.makedirs(theme_template_folder)
                 for template in file.iterdir():
                     if template.is_file():
-                        target_path = os.path.join(theme_template_folder, os.path.basename(str(template)))
+                        template_name = os.path.basename(str(template))
+                        copied_templates.append(template_name)
+                        target_path = os.path.join(theme_template_folder, template_name)
                         destination = Path(target_path)
                         destination.write_text(template.read_text())
+                        LOG.debug(f" copied template {template_name} to {theme_template_folder}")
+        if not copied_templates:
+            LOG.debug(f" No templates found in {self.template_path}")
+        return copied_templates
