@@ -49,7 +49,7 @@ def literal_environment():
     environment.graph.remove( (None, None, None) )
 
 @pytest.fixture
-def temporary_template_folder():
+def temporary_asset_folder():
     """Fixture to create a temporary template folder and delete it after
     the test."""
     current_dir = dirname(os.path.realpath(__file__))
@@ -63,3 +63,19 @@ def temporary_template_folder():
 
     # delete the template folder
     shutil.rmtree(template_folder_path)
+
+@pytest.fixture
+def temporary_asset_folder():
+    """Fixture to create a temporary asset folder and delete it after
+    the test."""
+    current_dir = dirname(os.path.realpath(__file__))
+    asset_folder_path = os.path.join(current_dir, "_temp_assets")
+
+    # create the asset folder
+    if not os.path.exists(asset_folder_path):
+        os.makedirs(asset_folder_path)
+
+    yield asset_folder_path
+
+    # delete the asset folder
+    shutil.rmtree(asset_folder_path)

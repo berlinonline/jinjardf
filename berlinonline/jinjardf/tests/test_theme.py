@@ -2,8 +2,12 @@ import os
 
 import pytest
 
+from berlinonline.jinjardf.tests import (
+    temporary_asset_folder,
+    temporary_asset_folder,
+)
 from berlinonline.jinjardf.theme import Theme
-from berlinonline.jinjardf.tests import temporary_template_folder
+
 
 class TestTheme(object):
 
@@ -56,22 +60,41 @@ class TestTheme(object):
         with pytest.raises(ValueError):
             theme = Theme(package='foo-bar/baz')
 
-    def test_copy_templates(self, temporary_template_folder):
+    def test_copy_templates(self, temporary_asset_folder):
         """Test if the theme's templates have been copied to the correct
         target folder.
         """
         theme = Theme('berlinonline.jinjardf.tests.theme_a')
-        copied_templates = theme.copy_templates(temporary_template_folder)
+        copied_templates = theme.copy_templates(temporary_asset_folder)
         assert len(copied_templates) == 2
         templates = [ 'base', 'default' ]
         for template in templates:
-            template_file = os.path.join(temporary_template_folder, theme.package, f"{template}.html.jinja")
+            template_file = os.path.join(temporary_asset_folder, theme.package, f"{template}.html.jinja")
             assert os.path.exists(template_file)
-        
-    def test_no_templates_copied(self, temporary_template_folder):
+
+    def test_no_templates_copied(self, temporary_asset_folder):
         """Test that no templates were copied.
         """
 
         theme = Theme('berlinonline.jinjardf.tests.theme_b')
-        copied_templates = theme.copy_templates(temporary_template_folder)
+        copied_templates = theme.copy_templates(temporary_asset_folder)
         assert len(copied_templates) == 0
+
+    def test_copy_assets(self, temporary_asset_folder):
+        """Test if the theme's assets have been copied to the correct
+        target folder.
+        """
+        theme = Theme('berlinonline.jinjardf.tests.theme_a')
+        copied_assets = theme.copy_assets(temporary_asset_folder)
+        assert len(copied_assets) == 2
+        assets = [ 'script.js', 'style.css' ]
+        for asset in assets:
+            asset_file = os.path.join(temporary_asset_folder, theme.package, asset)
+            assert os.path.exists(asset_file)
+
+    def test_only_templates_or_assets_allowed(self, temporary_asset_folder):
+        """Test that the only allowed types for copy_files are 'assets' and 
+        'templates'."""
+        theme = Theme('berlinonline.jinjardf.tests.theme_a')
+        with pytest.raises(ValueError):
+            theme._copy_files('fonzos', temporary_asset_folder)

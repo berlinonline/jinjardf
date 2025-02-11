@@ -8,8 +8,9 @@ version = "0.0.1"
 authors = [
   { name="Knud Möller", email="knud.moeller@berlinonline.de" },
 ]
-description = "Jinja2 filter for rdflib nodes"
+license = { file = "LICENSE" }
 readme = "README.md"
+description = "Jinja2 filter for rdflib nodes"
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
