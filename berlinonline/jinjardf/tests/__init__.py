@@ -48,34 +48,58 @@ def literal_environment():
     # empty the graph
     environment.graph.remove( (None, None, None) )
 
+def _create_temporary_folder(folder_name: str) -> str:
+    """Create a temporary folder for testing.
+
+    Args:
+        folder_name (str): the name of the folder
+
+    Returns:
+        str: the full path ofthe created folder
+    """
+    current_dir = dirname(os.path.realpath(__file__))
+    folder_path = os.path.join(current_dir, folder_name)
+
+    # create the folder
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    
+    return folder_path
+
+def _remove_temporary_folder(folder_path: str):
+    """Remove a temporary folder."""
+    shutil.rmtree(folder_path)
+
 @pytest.fixture
 def temporary_template_folder():
     """Fixture to create a temporary template folder and delete it after
     the test."""
-    current_dir = dirname(os.path.realpath(__file__))
-    template_folder_path = os.path.join(current_dir, "_temp_templates")
 
-    # create the template folder
-    if not os.path.exists(template_folder_path):
-        os.makedirs(template_folder_path)
+    template_folder_path = _create_temporary_folder('_temp_templates')
 
     yield template_folder_path
 
-    # delete the template folder
-    shutil.rmtree(template_folder_path)
+    _remove_temporary_folder(template_folder_path)
 
 @pytest.fixture
 def temporary_asset_folder():
     """Fixture to create a temporary asset folder and delete it after
     the test."""
-    current_dir = dirname(os.path.realpath(__file__))
-    asset_folder_path = os.path.join(current_dir, "_temp_assets")
 
-    # create the asset folder
-    if not os.path.exists(asset_folder_path):
-        os.makedirs(asset_folder_path)
+    asset_folder_path = _create_temporary_folder('_temp_assets')
 
     yield asset_folder_path
 
-    # delete the asset folder
-    shutil.rmtree(asset_folder_path)
+    _remove_temporary_folder(asset_folder_path)
+
+@pytest.fixture
+def temporary_config_folder():
+    """Fixture to create a temporary config folder and delete it after
+    the test."""
+
+    config_folder_path = _create_temporary_folder('_temp_config')
+
+    yield config_folder_path
+
+    _remove_temporary_folder(config_folder_path)
+

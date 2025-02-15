@@ -8,10 +8,9 @@ import berlinonline.jinjardf
 from berlinonline.jinjardf.tests import (
     temporary_template_folder,
     temporary_asset_folder,
+    temporary_config_folder,
 )
 from berlinonline.jinjardf.theme import Theme
-
-import importlib
 
 class TestTheme(object):
 
@@ -96,9 +95,21 @@ class TestTheme(object):
             asset_file = os.path.join(temporary_asset_folder, theme.package, asset)
             assert os.path.exists(asset_file)
 
-    def test_only_templates_or_assets_allowed(self, temporary_asset_folder):
-        """Test that the only allowed types for copy_files are 'assets' and 
-        'templates'."""
+    def test_copy_config(self, temporary_config_folder):
+        """Test if the theme's assets have been copied to the correct
+        target folder.
+        """
+        theme = Theme('berlinonline.jinjardf.tests.theme_a')
+        copied_config = theme.copy_config(temporary_config_folder)
+        assert len(copied_config) == 1
+        config_files = [ 'config.yml' ]
+        for config in config_files:
+            config_file = os.path.join(temporary_config_folder, theme.package, config)
+            assert os.path.exists(config_file)
+
+    def test_only_certain_folders_allowed(self, temporary_asset_folder):
+        """Test that the only allowed types for copy_files are 'assets', 
+        'templates' and 'config'."""
         theme = Theme('berlinonline.jinjardf.tests.theme_a')
         with pytest.raises(ValueError):
             theme._copy_files('fonzos', temporary_asset_folder)

@@ -1,0 +1,2 @@
+base_url: 'https://berlinonline.github.io' # the base hostname & protocol for your site, e.g. http://example.com
+base_path: '/jinja-rdf/example' # the subpath of your site, e.g. /blog

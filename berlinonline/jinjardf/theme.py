@@ -8,7 +8,7 @@ from importlib.util import find_spec
 from berlinonline.jinjardf.helper import is_valid_package_path
 
 LOG = logging.getLogger(__name__)
-ALLOWED_FILE_TYPES = [ 'templates', 'assets' ]
+ALLOWED_FILE_TYPES = [ 'templates', 'assets', 'config' ]
 
 class Theme(object):
     """A theme contains templates for use with the JinjaRDF site builder.
@@ -21,6 +21,8 @@ class Theme(object):
         Defaults to 'templates'.
         asset_path (str): The asset path relative to the theme's package.
         Defaults to 'assets'.
+        config_path (str): The config path relative to the theme's package.
+        Defaults to 'config'.
         file_paths (dict): A dict to get `self.template_path` and `self.asset_path`
         by name (either `self.file_paths['templates']` or `self.file_paths['assets']`).
     """
@@ -28,9 +30,10 @@ class Theme(object):
     name: str
     template_path: str
     asset_path: str
+    config_path: str
     file_paths: dict
 
-    def __init__(self, package: str, name: str=None, template_path: str='templates', asset_path: str='assets'):
+    def __init__(self, package: str, name: str=None, template_path: str='templates', asset_path: str='assets', config_path: str='config'):
         """Initialize the theme
 
         Args:
@@ -55,9 +58,11 @@ class Theme(object):
 
         self.template_path = template_path
         self.asset_path = asset_path
+        self.config_path = config_path
         self.file_paths = {
             'templates': self.template_path ,
             'assets': self.asset_path ,
+            'config': self.config_path ,
         }
 
     def resolve_package(self) -> Traversable:
@@ -141,3 +146,15 @@ class Theme(object):
             list: the names of the copied assets
         """
         return self._copy_files('assets', target_folder)
+    
+    def copy_config(self, target_folder: str) -> list:
+        """Copy the theme's config to a subfolder in the site generator's 
+        config folder.
+
+        Args:
+            target_folder (str): the site generator's config folder
+
+        Returns:
+            list: the list of the copied config files
+        """
+        return self._copy_files('config', target_folder)
