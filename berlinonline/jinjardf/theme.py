@@ -2,6 +2,8 @@ import logging
 import os
 from importlib.resources import files
 from pathlib import Path
+from importlib.resources.abc import Traversable
+from importlib.util import find_spec
 
 from berlinonline.jinjardf.helper import is_valid_package_path
 
@@ -58,6 +60,24 @@ class Theme(object):
             'assets': self.asset_path ,
         }
 
+    def resolve_package(self) -> Traversable:
+        """Take `self.package` and resolve to its location as a `Traversable`,
+        regardless of having been installed in editable mode or not.
+
+        Returns:
+            Traversable: The location of the package, e.g. as a `Path` or
+            a `MultiplexedPath`.
+        """
+        try:
+            package_location = files(self.package)
+        except NotADirectoryError:
+            for location in find_spec(self.package).submodule_search_locations:
+                if os.path.isdir(location):
+                    break
+            package_location = Path(location)
+        
+        return package_location
+
     def _copy_files(self, type: str, target_folder: str) -> list:
         """Generic method to copy either the templates or the assets
         of a theme from their installed location in the python site packages
@@ -73,8 +93,13 @@ class Theme(object):
         if type not in ALLOWED_FILE_TYPES:
             raise ValueError(f"'type' must be one of ({' | '.join(ALLOWED_FILE_TYPES)}).")
         copied_files = []
-        files_path = files(self.package) / self.file_paths[type]
-        for file in files(self.package).iterdir():
+        # NOTE: calling files on a package that is installed as an editable install will
+        # result in an error. This is probably a bug. There is a fix for it, but that has
+        # not yet been added to Python.
+        # see https://github.com/python/importlib_resources/issues/311
+        package_location = self.resolve_package()
+        files_path = package_location / self.file_paths[type]
+        for file in package_location.iterdir():
             if file == files_path:
                 LOG.debug(f" copying {type} from {files_path}")
                 theme_files_folder = os.path.join(target_folder, self.package)

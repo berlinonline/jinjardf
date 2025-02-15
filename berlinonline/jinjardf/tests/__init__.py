@@ -49,7 +49,7 @@ def literal_environment():
     environment.graph.remove( (None, None, None) )
 
 @pytest.fixture
-def temporary_asset_folder():
+def temporary_template_folder():
     """Fixture to create a temporary template folder and delete it after
     the test."""
     current_dir = dirname(os.path.realpath(__file__))

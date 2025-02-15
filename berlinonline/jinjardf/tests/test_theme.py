@@ -1,13 +1,17 @@
 import os
+from pathlib import PosixPath
 
 import pytest
 
+import berlinonline
+import berlinonline.jinjardf
 from berlinonline.jinjardf.tests import (
-    temporary_asset_folder,
+    temporary_template_folder,
     temporary_asset_folder,
 )
 from berlinonline.jinjardf.theme import Theme
 
+import importlib
 
 class TestTheme(object):
 
@@ -60,24 +64,24 @@ class TestTheme(object):
         with pytest.raises(ValueError):
             theme = Theme(package='foo-bar/baz')
 
-    def test_copy_templates(self, temporary_asset_folder):
+    def test_copy_templates(self, temporary_template_folder):
         """Test if the theme's templates have been copied to the correct
         target folder.
         """
         theme = Theme('berlinonline.jinjardf.tests.theme_a')
-        copied_templates = theme.copy_templates(temporary_asset_folder)
+        copied_templates = theme.copy_templates(temporary_template_folder)
         assert len(copied_templates) == 2
         templates = [ 'base', 'default' ]
         for template in templates:
-            template_file = os.path.join(temporary_asset_folder, theme.package, f"{template}.html.jinja")
+            template_file = os.path.join(temporary_template_folder, theme.package, f"{template}.html.jinja")
             assert os.path.exists(template_file)
 
-    def test_no_templates_copied(self, temporary_asset_folder):
+    def test_no_templates_copied(self, temporary_template_folder):
         """Test that no templates were copied.
         """
 
         theme = Theme('berlinonline.jinjardf.tests.theme_b')
-        copied_templates = theme.copy_templates(temporary_asset_folder)
+        copied_templates = theme.copy_templates(temporary_template_folder)
         assert len(copied_templates) == 0
 
     def test_copy_assets(self, temporary_asset_folder):
@@ -98,3 +102,25 @@ class TestTheme(object):
         theme = Theme('berlinonline.jinjardf.tests.theme_a')
         with pytest.raises(ValueError):
             theme._copy_files('fonzos', temporary_asset_folder)
+
+    def test_resolve_package_returns_multiplexpath(self):
+
+        theme = Theme('berlinonline.jinjardf.tests.theme_a')
+        path = theme.resolve_package()
+        assert type(path) is PosixPath
+        assert os.path.isdir(path)
+
+
+    def test_resolve_package_handles_error(self, monkeypatch):
+        """Test that when resolve_package() throws a NotADirectoryError (i.e. when
+        the package was installed in editable mode), the error is handled correctly."""
+
+        def mock_files(_):
+            raise NotADirectoryError("Mocked error")
+
+        monkeypatch.setattr(berlinonline.jinjardf.theme, "files", mock_files)
+        theme = Theme('berlinonline.jinjardf.tests.theme_a')
+
+        path = theme.resolve_package()
+        assert type(path) is PosixPath
+        assert os.path.isdir(path)
