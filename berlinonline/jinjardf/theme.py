@@ -113,9 +113,9 @@ class Theme(object):
                 for _file in file.iterdir():
                     if _file.is_file():
                         file_name = os.path.basename(str(_file))
-                        copied_files.append(file_name)
                         target_path = os.path.join(theme_files_folder, file_name)
                         destination = Path(target_path)
+                        copied_files.append(destination)
                         destination.write_text(_file.read_text())
                         LOG.debug(f" copied {file_name} to {theme_files_folder}")
         if not copied_files:

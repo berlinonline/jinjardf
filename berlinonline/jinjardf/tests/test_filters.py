@@ -12,6 +12,7 @@ from berlinonline.jinjardf.tests import (
     LITERALS,
     SCHEMA,
     duck_environment,
+    duck_environment_with_prefixes,
     literal_environment,
 )
 
@@ -202,8 +203,6 @@ class TestSPARQLQuery(object):
 
     def test_resource_uri_replaced_correctly(self, duck_environment):
         query = """
-            PREFIX schema: <https://schema.org/>
-            PREFIX family: <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/>
             SELECT ?mother
             WHERE { 
                 ?resourceUri family:hasParent ?mother.
@@ -211,6 +210,19 @@ class TestSPARQLQuery(object):
             }
         """
         results = RDFFilters.sparql_query(duck_environment, resourceURI=DUCKS.DonaldDuck, query=query)
+        assert len(results) == 1
+        for result in results:
+            assert result['mother'] == DUCKS.HortenseMcDuck
+
+    def test_sparql_prefixes_added(self, duck_environment_with_prefixes):
+        query = """
+            SELECT ?mother
+            WHERE { 
+                ?resourceUri familx:hasParent ?mother.
+                ?mother schemax:gender 'female' .
+            }
+        """
+        results = RDFFilters.sparql_query(duck_environment_with_prefixes, resourceURI=DUCKS.DonaldDuck, query=query)
         assert len(results) == 1
         for result in results:
             assert result['mother'] == DUCKS.HortenseMcDuck

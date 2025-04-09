@@ -527,6 +527,8 @@ class RDFFilters(Extension):
         """
 
         graph = environment.graph
+        query = f'{environment.sparql_prefixes}\
+        {query}'
         query = query.replace("?resourceUri", f"<{resourceURI}>")
         result = graph.query(query)
         return result

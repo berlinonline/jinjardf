@@ -67,6 +67,7 @@ from rdflib.paths import OneOrMore
 from berlinonline.jinjardf.helper import replace_curies, split_curie
 from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 from berlinonline.jinjardf.rdf_filters import RDFFilters
+from berlinonline.jinjardf.theme import Theme
 
 import progressbar
 
@@ -155,6 +156,7 @@ class SiteGenerator(object):
     base_path: str
     resource_prefix: str
     site_url: str
+    themes: list
     prefixes: dict
     sparql_prefixes: str
     template_prefixes: dict
@@ -190,7 +192,12 @@ class SiteGenerator(object):
             LOG.info(f" current site_url ({self.site_url}) is overridden by the command line parameter: {cli_site_url}")
             self.site_url = cli_site_url
 
-        self.prefixes = self.read_config('prefixes', DEFAULT_PREFIXES)
+        self.prefixes = {}
+
+        self.themes = self.read_config('themes', {})
+        self.install_themes()
+
+        self.prefixes = self.prefixes | self.read_config('prefixes', DEFAULT_PREFIXES)
         self.sparql_prefixes = self.prefix_dict_to_sparql(self.prefixes)
         self.template_prefixes = self.prefix_dict_to_template_prefixes(self.prefixes)
         
@@ -209,7 +216,12 @@ class SiteGenerator(object):
         self.output_path = self.read_config('output_path', DEFAULT_OUTPUT_PATH)
         self.include = self.read_config('include', [])
 
-        self.environment = RDFEnvironment(dataset=dataset_path, resource_prefix=self.resource_prefix, site_url=self.site_url, extensions=[RDFFilters], loader=loader)
+        self.environment = RDFEnvironment(dataset=dataset_path,
+                                          resource_prefix=self.resource_prefix,
+                                          site_url=self.site_url,
+                                          sparql_prefixes=self.sparql_prefixes,
+                                          extensions=[RDFFilters],
+                                          loader=loader)
 
         self.template_arguments = {
             'base_url': self.base_url,
@@ -235,6 +247,22 @@ class SiteGenerator(object):
         else:
             LOG.info(f" reading {config_key}: '{value}' ...")
         return value
+
+    def install_themes(self):
+        """Instantiate the themes specified in the config file and copy their resource files
+        (templates, assets, config)."""
+
+        for theme_name in self.themes:
+            LOG.debug(f" installing theme: {theme_name}")
+            theme = Theme(theme_name)
+            theme.copy_templates('templates')
+            theme.copy_assets('assets')
+            config_files = theme.copy_config('config')
+            for config_file in config_files:
+                LOG.debug(f"reading config from {config_file}")
+                theme_config = yaml.safe_load(config_file)
+                theme_prefixes = theme_config['prefixes']
+                self.prefixes = self.prefixes | theme_prefixes
 
     def extract_resources(self):
         """Run the restriction_query on the loaded RDF data to determine the set
