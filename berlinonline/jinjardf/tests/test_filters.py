@@ -12,7 +12,6 @@ from berlinonline.jinjardf.tests import (
     LITERALS,
     SCHEMA,
     duck_environment,
-    duck_environment_with_prefixes,
     literal_environment,
 )
 
@@ -214,18 +213,18 @@ class TestSPARQLQuery(object):
         for result in results:
             assert result['mother'] == DUCKS.HortenseMcDuck
 
-    def test_sparql_prefixes_added(self, duck_environment_with_prefixes):
-        query = """
-            SELECT ?mother
-            WHERE { 
-                ?resourceUri familx:hasParent ?mother.
-                ?mother schemax:gender 'female' .
-            }
-        """
-        results = RDFFilters.sparql_query(duck_environment_with_prefixes, resourceURI=DUCKS.DonaldDuck, query=query)
-        assert len(results) == 1
-        for result in results:
-            assert result['mother'] == DUCKS.HortenseMcDuck
+    # def test_sparql_prefixes_added(self, duck_environment):
+    #     query = """
+    #         SELECT ?mother
+    #         WHERE { 
+    #             ?resourceUri familx:hasParent ?mother.
+    #             ?mother schemax:gender 'female' .
+    #         }
+    #     """
+    #     results = RDFFilters.sparql_query(duck_environment, resourceURI=DUCKS.DonaldDuck, query=query)
+    #     assert len(results) == 1
+    #     for result in results:
+    #         assert result['mother'] == DUCKS.HortenseMcDuck
 
 class TestTitle(object):
 

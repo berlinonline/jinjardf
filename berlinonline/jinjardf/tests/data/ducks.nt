@@ -1,0 +1,107 @@
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/ns/voidDataset> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://purl.org/dc/terms/title> "Duck Family Tree"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://purl.org/dc/terms/description> "Excerpt of the family tree of the fictional character Donald Duck."@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://purl.org/dc/terms/created> "2024-12-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://purl.org/dc/terms/modified> "2024-12-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://purl.org/dc/terms/license> <https://creativecommons.org/publicdomain/zero/1.0/> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://xmlns.com/foaf/0.1/homepage> <https://github.com/berlinonline/jinja-rdf> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://rdfs.org/ns/voiddataDump> <https://raw.githubusercontent.com/berlinonline/jinja-rdf/main/berlinonline/jinjardf/tests/data/ducks.ttl> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://rdfs.org/ns/voidfeature> <http://www.w3.org/ns/formats/Turtle> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://rdfs.org/ns/voidexampleResource> <https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://rdfs.org/ns/voidexampleResource> <https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/> <http://rdfs.org/ns/voidvocabulary> <https://schema.org/> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/name> "Donald Duck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/name> "Donald Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/name> "Donald Duck"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/name> "Pato Donald"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/name> "Anders And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DonaldDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/name> "Della Duck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/name> "Della Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/name> "Della Duck"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/name> "Bella Pato"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/name> "Della And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://schema.org/gender> "female" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/name> "Hortense McDuck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/name> "Hortense McDuck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/name> "Hortense McDuck"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/name> "Hortensia McPato"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/name> "Hortensia von And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://schema.org/gender> "female" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HortenseMcDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/name> "Quackmore Duck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/name> "Degenhard Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/name> "Rodolphe Duck"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/name> "Dabney Duck"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/name> "Didrik Duck"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/QuackmoreDuck> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/name> "Grandma Duck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/name> "Oma Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/name> "Mamie Baba"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/name> "Abuela Pato"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/name> "Bedstemor And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/GrandmaDuck> <https://schema.org/gender> "female" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/name> "Humperdink Duck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/name> "Dagobert Duckenhof"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/name> "Gontran Duck"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/name> "Danken Pato"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/name> "Cornelius And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/HumperdinkDuck> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/name> "Scrooge McDuck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/name> "Dagobert Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/name> "Balthazar Picsou"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/name> "T\u00EDo Gilito"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/name> "Joakim von And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/ScroogeMcDuck> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/name> "Fergus McDuck"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/name> "Fergus McDuck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/name> "Fergus Picsou"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/name> "Fergus McPato"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/name> "Fergus von And"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/FergusMcDuck> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/name> "Downy O'Drake"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/name> "Dortel Duck"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/name> "Douce Picsou"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/name> "Downy O\u2019Draco"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/name> "Downy O'Drake"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/DownyODrake> <https://schema.org/gender> "female" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/name> "Huey"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/name> "Tick"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/name> "Riri"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/name> "Jaimito"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/name> "Rip"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Huey> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/name> "Dewey"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/name> "Trick"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/name> "Fifi"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/name> "Jorgito"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/name> "Rap"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Dewey> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/name> "Louie"@en .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/name> "Track"@de .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/name> "Loulou"@fr .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/name> "Juanito"@es .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/name> "Rup"@da .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://schema.org/gender> "male" .
+<https://berlinonline.github.io/jinja-rdf/example/ducks/Louie> <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/hasParent> <https://berlinonline.github.io/jinja-rdf/example/ducks/DellaDuck> .

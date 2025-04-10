@@ -13,11 +13,11 @@ FAMILY = Namespace('https://berlinonline.github.io/jinja-rdf/example/ducks/vocab
 LITERALS = Namespace('https://berlinonline.github.io/jinja-rdf/example/literals/')
 SCHEMA = Namespace('https://schema.org/')
 
-def create_environment(filename: str, resource_prefix: str, site_url: str, sparql_prefixes='') -> RDFEnvironment:
+def create_environment(filename: str, resource_prefix: str, site_url: str, prefixes={}) -> RDFEnvironment:
     # load test data
     test_folder = pathlib.Path(__file__).parent.resolve()
     data_path = os.path.join(test_folder, "data", filename)
-    return RDFEnvironment(dataset=data_path, resource_prefix=resource_prefix, site_url=site_url, sparql_prefixes=sparql_prefixes)
+    return RDFEnvironment(dataset=data_path, resource_prefix=resource_prefix, site_url=site_url, prefixes=prefixes)
 
 
 @pytest.fixture
@@ -27,24 +27,11 @@ def duck_environment():
     # load test data
     site_url = 'https://berlinonline.github.io/jinja-rdf/example/ducks'
     resource_prefix = site_url + '/'
-    environment = create_environment(filename='ducks.ttl', resource_prefix=resource_prefix, site_url=site_url)
-
-    yield environment
-
-    # empty the graph
-    environment.graph.remove( (None, None, None) )
-
-@pytest.fixture
-def duck_environment_with_prefixes():
-    """Fixture to load the duck test data
-    """
-    # load test data
-    site_url = 'https://berlinonline.github.io/jinja-rdf/example/ducks'
-    resource_prefix = site_url + '/'
-    sparql_prefixes = 'PREFIX schemax: <https://schema.org/>\
-    PREFIX familx: <https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/>\
-    '
-    environment = create_environment(filename='ducks.ttl', resource_prefix=resource_prefix, site_url=site_url, sparql_prefixes=sparql_prefixes)
+    prefixes = {
+        'family': 'https://berlinonline.github.io/jinja-rdf/example/ducks/vocab/',
+        'schema': 'https://schema.org/',
+    }
+    environment = create_environment(filename='ducks.nt', resource_prefix=resource_prefix, site_url=site_url, prefixes=prefixes)
 
     yield environment
 

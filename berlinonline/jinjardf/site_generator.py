@@ -198,7 +198,6 @@ class SiteGenerator(object):
         self.install_themes()
 
         self.prefixes = self.prefixes | self.read_config('prefixes', DEFAULT_PREFIXES)
-        self.sparql_prefixes = self.prefix_dict_to_sparql(self.prefixes)
         self.template_prefixes = self.prefix_dict_to_template_prefixes(self.prefixes)
         
         self.restriction_query = self.read_config('restriction_query', DEFAULT_RESTRICTION.format(self.resource_prefix))
@@ -219,7 +218,7 @@ class SiteGenerator(object):
         self.environment = RDFEnvironment(dataset=dataset_path,
                                           resource_prefix=self.resource_prefix,
                                           site_url=self.site_url,
-                                          sparql_prefixes=self.sparql_prefixes,
+                                          prefixes=self.prefixes,
                                           extensions=[RDFFilters],
                                           loader=loader)
 
@@ -321,10 +320,6 @@ class SiteGenerator(object):
             except KeyboardInterrupt:
                 print("\nShutting down the server.")
                 httpd.server_close()
-
-    def prefix_dict_to_sparql(self, prefixes: dict) -> str:
-        sparql_prefixes = "\n".join(f"PREFIX {prefix}: {url}" for prefix, url in prefixes.items())
-        return sparql_prefixes
 
     def prefix_dict_to_template_prefixes(self, prefixes: dict) -> dict:
         template_prefixes = { prefix.upper(): Namespace(url) for prefix, url in prefixes.items() }

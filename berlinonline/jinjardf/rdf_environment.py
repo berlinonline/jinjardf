@@ -13,11 +13,12 @@ class RDFEnvironment(Environment):
     site_url: str
     graph: Graph
 
-    def __init__(self, dataset: str, resource_prefix: str, site_url: str, sparql_prefixes="", **kwargs):
+    def __init__(self, dataset: str, resource_prefix: str, site_url: str, prefixes={}, **kwargs):
         super().__init__(**kwargs)
         self.graph = Graph()
+        for prefix, url in prefixes.items():
+            self.graph.bind(prefix, url)
         if (dataset):
             self.graph.parse(dataset)
         self.resource_prefix = resource_prefix
         self.site_url = site_url
-        self.sparql_prefixes = sparql_prefixes
