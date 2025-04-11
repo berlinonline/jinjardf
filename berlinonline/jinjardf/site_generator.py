@@ -257,11 +257,12 @@ class SiteGenerator(object):
             theme.copy_templates('templates')
             theme.copy_assets('assets')
             config_files = theme.copy_config('config')
-            for config_file in config_files:
-                LOG.debug(f"reading config from {config_file}")
-                theme_config = yaml.safe_load(config_file)
-                theme_prefixes = theme_config['prefixes']
-                self.prefixes = self.prefixes | theme_prefixes
+            for config_path in config_files:
+                LOG.debug(f"reading config from {config_path}")
+                with open(config_path) as config_file:
+                    theme_config = yaml.safe_load(config_file)
+                    theme_prefixes = theme_config['prefixes']
+                    self.prefixes = self.prefixes | theme_prefixes
 
     def extract_resources(self):
         """Run the restriction_query on the loaded RDF data to determine the set
