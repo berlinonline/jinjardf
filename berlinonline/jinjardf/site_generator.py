@@ -397,13 +397,15 @@ class SiteGenerator(object):
         resource_template_index = {}
         # the following only covers resources which have a type
         for resource, classUris in resource_class_index.items():
+            # problem here: if len(classUris) > 1, the last one wins, all others are ignored
+            # we need a way to prioritize
             for classUri in classUris:
                 superclasses = class_superclass_index[classUri] + [classUri]
                 intersection = [ superclass for superclass in superclasses if superclass in mapping_classes ]
                 template_class = intersection.pop()
                 resource_template_index[resource] = self.class_template_mapping[template_class]
         # get all resources that do not have a class and assign them the default template
-        not_covered = {resource: DEFAULT_TEMPLATE
+        not_covered = {resource: self.default_template
                        for resource in resources
                        if resource_class_index[resource] == []}
         # merge both mappings
