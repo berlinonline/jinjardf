@@ -17,6 +17,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+  "pyyaml",
+  "rdflib",
+  "progressbar2",
+]
 
 [project.urls]
 Homepage = "https://github.com/berlinonline/jinja-rdf"
