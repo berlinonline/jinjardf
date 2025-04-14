@@ -105,6 +105,7 @@ class RDFFilters(Extension):
         environment.filters['sparql_query'] = self.sparql_query
         environment.filters['statements_as_subject'] = self.statements_as_subject
         environment.filters['statements_as_object'] = self.statements_as_object
+        environment.filters['get_text'] = self.get_text
         environment.filters['title'] = self.title
         environment.filters['title_any'] = self.title_any
         environment.filters['description'] = self.description
