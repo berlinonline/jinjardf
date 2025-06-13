@@ -337,7 +337,7 @@ class RDFFilters(Extension):
         """
         
         graph = environment.graph
-        objects = list(graph.objects(subject=subject, predicate=URIRef(predicate), unique=unique))
+        objects = list(graph.objects(subject=subject, predicate=predicate, unique=unique))
         if language:
             if language != UNTAGGED:
                 objects = [
@@ -434,7 +434,7 @@ class RDFFilters(Extension):
              List[rdflib.IdentifiedNode]: a list of subject nodes (`URIRef` or `BNode`)
         """
         graph = environment.graph
-        subjects = list(graph.subjects(predicate=URIRef(predicate), object=object, unique=unique))
+        subjects = list(graph.subjects(predicate=predicate, object=object, unique=unique))
         return subjects
 
     @staticmethod
