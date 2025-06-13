@@ -402,9 +402,10 @@ class SiteGenerator(object):
                 intersection = [ superclass for superclass in superclasses if superclass in mapping_classes ]
                 template_class = intersection.pop()
                 resource_template_index[resource] = self.class_template_mapping[template_class]
-                if template_class:
-                    # stop looking for more templates once we find one
-                    # (assuming the first one we find is the most specific)
+                if resource_template_index[resource] != self.default_template:
+                    # stop looking for more templates once we find one that is not the default template
+                    # TODO: this is brittle, we should introduce assigning weights to templates to
+                    # choose the preferred one
                     break
         # get all resources that do not have a class and assign them the default template
         not_covered = {resource: self.default_template
