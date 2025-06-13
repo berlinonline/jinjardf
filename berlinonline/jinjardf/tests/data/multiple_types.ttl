@@ -1,0 +1,10 @@
+@prefix multiple: <http://example.com/multiple/> .
+@prefix types: <http://example.com/types/> .
+
+multiple:thing a types:A, types:B . # should get template typeA
+
+multiple:thing2 a types:B, types:A . #should get template typeA
+
+multiple:thing3 a types:A . # should get template typeA
+ 
+multiple:thing4 a types:B . # should get default templte

@@ -144,6 +144,20 @@ class TestResourceTemplateIndex(object):
         with pytest.raises(ConfigException):
             SiteGenerator(build_config_path('things.yml'))
 
+    def test_prefer_defined_template_over_default(self):
+        MULTIPLE = Namespace('http://example.com/multiple/')
+        test_folder = pathlib.Path(__file__).parent.resolve()
+        os.chdir(test_folder)
+        generator = SiteGenerator(build_config_path('multiple_types.yml'))
+        resources = generator.extract_resources()
+        resource_class_index = generator.compute_resource_class_index(resources)
+        class_superclass_index = generator.compute_class_superclass_index(resource_class_index)
+        resource_template_index = generator.compute_resource_template_index(resources, resource_class_index, class_superclass_index)
+        assert resource_template_index[MULTIPLE.thing] == 'typeA.html.jinja'
+        assert resource_template_index[MULTIPLE.thing2] == 'typeA.html.jinja'
+        assert resource_template_index[MULTIPLE.thing3] == 'typeA.html.jinja'
+        assert resource_template_index[MULTIPLE.thing4] == 'default.html.jinja'
+
 
 
 class TestGeneratePath(object):
