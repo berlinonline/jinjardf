@@ -397,10 +397,6 @@ class SiteGenerator(object):
         resource_template_index = {}
         # the following only covers resources which have a type
         for resource, classUris in resource_class_index.items():
-            # problem here: if len(classUris) > 1, the last one wins, all others are ignored
-            # we need a way to prioritize
-            # it should at least be: if there is no template defined for a class, pick the next one until
-            # you have tried all of them
             for classUri in classUris:
                 superclasses = class_superclass_index[classUri] + [classUri]
                 intersection = [ superclass for superclass in superclasses if superclass in mapping_classes ]
