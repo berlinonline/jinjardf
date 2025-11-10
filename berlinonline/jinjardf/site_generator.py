@@ -425,8 +425,8 @@ class CustomHandler(SimpleHTTPRequestHandler): # pragma: no cover
     """
     def do_GET(self):
         # Check if the request is for a file without extension
-        if self.path == '/':
-            self.path == 'index.html'
+        if self.path.endswith('/'):
+            self.path += 'index.html'
         elif not os.path.splitext(self.path)[1]:  # No extension in the requested path
             self.path += ".html"  # Append .html extension
             
