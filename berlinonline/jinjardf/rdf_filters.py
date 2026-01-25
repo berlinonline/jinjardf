@@ -477,7 +477,7 @@ class RDFFilters(Extension):
         """Run a custom SPARQL query, where each occurrence of `?resourceUri`
         is replaced with the `resourceURI` parameter. Returns an rdflib.query.Result object.
         What this actually is depends on the type of query (see
-        https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.query.Result). In the
+        https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.query/#rdflib.query.Result). In the
         typical case of a SELECT query the result is an iterator of rdflib.query.ResultRow obejcts,
         where each row represents one result and gives access to the variable bindings as attributes
         (`result.variable`) or via `[]` notation (`result['variable']).
@@ -485,7 +485,7 @@ class RDFFilters(Extension):
         Returns an iterator over the 
         resultset, where each result contains the bindings for the selected variables
         (in the case of a SELECT query).
-        See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.html#rdflib.query.Result.
+        See https://rdflib.readthedocs.io/en/latest/apidocs/rdflib.query/#rdflib.query.Result.
 
         Examples:
 
