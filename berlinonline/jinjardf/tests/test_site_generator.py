@@ -1,9 +1,10 @@
 import os
 import pathlib
+from pathlib import Path
 
 import pytest
-from rdflib import Namespace, URIRef, OWL
 import yaml
+from rdflib import OWL, Namespace, URIRef
 
 from berlinonline.jinjardf.site_generator import (
     DEFAULT_BASEPATH,
@@ -13,7 +14,7 @@ from berlinonline.jinjardf.site_generator import (
     DEFAULT_TEMPLATE,
     ConfigException,
     SiteGenerator,
-    generate_output_path_from_resource
+    generate_output_path_from_resource,
 )
 
 
@@ -62,6 +63,27 @@ class TestInstantiation(object):
         assert os.path.isfile(build_output_path('index.html'))
         assert os.path.isfile(build_output_path('jinjardf/example/index.html'))
         assert os.path.isfile(build_output_path('jinjardf/something.html'))
+
+    def test_extras(self):
+        test_folder = pathlib.Path(__file__).parent.resolve()
+        os.chdir(test_folder)
+        generator = SiteGenerator(build_config_path('extras.yml'))
+        assert generator.extras == {
+            'foo': 'daz dingo',
+            'base_url': 'overridden',
+            'message': 'hello world',
+            'version': '1.2'
+        }
+        assert generator.template_arguments['foo'] == 'daz dingo'
+        assert generator.template_arguments['base_url'] != 'overridden'
+        assert generator.template_arguments['base_url'] == 'https://berlinonline.github.io'
+        resources = generator.extract_resources()
+        generator.clear_site()
+        generator.generate_site(resources)
+        assert os.path.isfile(build_output_path('index.html'))
+        contents = Path(build_output_path('index.html')).read_text()
+        assert "daz dingo" in contents
+        assert "Version: 1.2" in contents
 
     def test_class_hierarchy(self):
         UPPER = Namespace('https://berlinonline.github.io/jinja-rdf/example/class_hierarchy/')

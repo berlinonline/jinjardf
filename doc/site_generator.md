@@ -8,6 +8,7 @@
   * [DEFAULT\_OUTPUT\_PATH](#jinjardf.site_generator.DEFAULT_OUTPUT_PATH)
   * [SiteGenerator](#jinjardf.site_generator.SiteGenerator)
     * [read\_config](#jinjardf.site_generator.SiteGenerator.read_config)
+    * [install\_themes](#jinjardf.site_generator.SiteGenerator.install_themes)
     * [extract\_resources](#jinjardf.site_generator.SiteGenerator.extract_resources)
     * [compute\_resource\_class\_index](#jinjardf.site_generator.SiteGenerator.compute_resource_class_index)
     * [compute\_class\_superclass\_index](#jinjardf.site_generator.SiteGenerator.compute_class_superclass_index)
@@ -52,6 +53,9 @@ include: # a list of files and folders that should be copied into the output_pat
   - assets/
 class_template_mappings: # mappings from classes to templates
   "void:Dataset": "dataset.html.jinja"
+extras: # a dictionary of attributes and values that should be available in the templates
+  version: "1.2"
+  message: "hello world"
 ```
 {% endraw %}
 
@@ -73,6 +77,8 @@ for most purposes be use like a `str` (the URI of the node).
 - All prefixes in `prefixes` are also available directly in upper case in the template and are instances
 of `rdflib.Namespace`. E.g., if `void: [http://rdfs.org/ns/void#`](http://rdfs.org/ns/void#`) is defined in the configuration, then
 in the template we can do `{{ VOID.Dataset }}` to get `[http://rdfs.org/ns/void#Dataset`.](http://rdfs.org/ns/void#Dataset`.)
+- All keys from the `extras` map are available as variables. E.g., if `message: "hello world"` is defined under
+`extras` in the configuration, then in the template `{{ message }}` will be replaced with `hello world`.
 
 <a id="jinjardf.site_generator.DEFAULT_RESTRICTION"></a>
 
@@ -194,6 +200,19 @@ return the default instead. Write an appropriate log message for each case.
 **Returns**:
 
 - `_type_` - Either the value read from the config or the default.
+
+<a id="jinjardf.site_generator.SiteGenerator.install_themes"></a>
+
+### install\_themes
+
+{% raw %}
+```python
+def install_themes()
+```
+{% endraw %}
+
+Instantiate the themes specified in the config file and copy their resource files
+(templates, assets, config).
 
 <a id="jinjardf.site_generator.SiteGenerator.extract_resources"></a>
 

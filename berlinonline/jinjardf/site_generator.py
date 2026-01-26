@@ -30,6 +30,9 @@ include: # a list of files and folders that should be copied into the output_pat
   - assets/
 class_template_mappings: # mappings from classes to templates
   "void:Dataset": "dataset.html.jinja"
+extras: # a dictionary of attributes and values that should be available in the templates
+  version: "1.2"
+  message: "hello world"
 ```
 
 If you want to run the generator locally for test purposes, you can also pass a second parameter with
@@ -50,6 +53,8 @@ for most purposes be use like a `str` (the URI of the node).
 - All prefixes in `prefixes` are also available directly in upper case in the template and are instances
 of `rdflib.Namespace`. E.g., if `void: http://rdfs.org/ns/void#` is defined in the configuration, then
 in the template we can do `{{ VOID.Dataset }}` to get `http://rdfs.org/ns/void#Dataset`.
+- All keys from the `extras` map are available as variables. E.g., if `message: "hello world"` is defined under
+`extras` in the configuration, then in the template `{{ message }}` will be replaced with `hello world`.
 """
 from  http.server import SimpleHTTPRequestHandler
 import logging
@@ -167,6 +172,7 @@ class SiteGenerator(object):
     class_template_mapping: dict
     resource_template_index: dict
     environment: RDFEnvironment
+    extras: dict
 
     def __init__(self, config_path: str, cli_site_url: str=None):
 
@@ -222,7 +228,9 @@ class SiteGenerator(object):
                                           extensions=[RDFFilters],
                                           loader=loader)
 
-        self.template_arguments = {
+        self.extras = self.read_config('extras', {})
+
+        self.template_arguments = self.extras | {
             'base_url': self.base_url,
             'base_path': self.base_path,
             'resource_prefix': self.resource_prefix,

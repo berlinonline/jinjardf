@@ -1,0 +1,8 @@
+base_url: 'https://berlinonline.github.io' # the base hostname & protocol for your site, e.g. http://example.com
+dataset_path: 'data/extras.ttl'
+default_template: "extras.html.jinja"
+extras:
+  foo: daz dingo
+  base_url: overridden
+  version: "1.2"
+  message: "hello world"
