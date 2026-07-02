@@ -351,3 +351,22 @@ class TestRelativeURI(object):
     def test_relative_uri_generated_correctly(self, literal_environment: RDFEnvironment, data: list):
         literal_environment.site_url = data['site_url']
         assert RDFFilters.relative_uri(literal_environment, data['resourceUri']) == data['expected']
+
+class TestMarkdownFilter(object):
+
+    @pytest.mark.parametrize('data', [
+        {
+            'text': 'foo bar',
+            'expected': '<p>foo bar</p>'
+        },
+        {
+            'text': '*foo* bar',
+            'expected': '<p><em>foo</em> bar</p>'
+        },
+        {
+            'text': '*foo* bar<script>evil</script>',
+            'expected': '<p><em>foo</em> bar</p>'
+        },
+    ])
+    def test_markdown_produces_correct_output(self, data: list):
+        assert RDFFilters.markdown_filter(data['text']) == data['expected']

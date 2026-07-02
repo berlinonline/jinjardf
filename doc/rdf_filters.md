@@ -22,6 +22,7 @@
     * [description](#jinjardf.rdf_filters.RDFFilters.description)
     * [description\_any](#jinjardf.rdf_filters.RDFFilters.description_any)
     * [relative\_uri](#jinjardf.rdf_filters.RDFFilters.relative_uri)
+    * [markdown\_filter](#jinjardf.rdf_filters.RDFFilters.markdown_filter)
 
 <a id="jinjardf.rdf_filters"></a>
 
@@ -1230,4 +1231,28 @@ _and_ on a local development server (at e.g. localhost:8000).
 **Returns**:
 
 - `str` - the relative URI
+
+<a id="jinjardf.rdf_filters.RDFFilters.markdown_filter"></a>
+
+### markdown\_filter
+
+{% raw %}
+```python
+@staticmethod
+def markdown_filter(text: str) -> str
+```
+{% endraw %}
+
+Filter for generating HTML output from markdown input.
+The output has already been marked as safe Markup, so things like
+element brackets won't be escaped by Jinja.
+
+**Arguments**:
+
+- `text` _str_ - the markdown input
+  
+
+**Returns**:
+
+- `str` - the html output
 

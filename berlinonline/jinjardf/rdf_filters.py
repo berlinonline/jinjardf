@@ -54,6 +54,10 @@ from rdflib import BNode, IdentifiedNode, Literal, URIRef, RDFS, Namespace
 from rdflib.term import Identifier, Node
 from rdflib.query import Result
 
+from markdown import markdown
+from markupsafe import Markup
+import nh3
+
 from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 
 LOG = logging.getLogger(__name__)
@@ -93,7 +97,7 @@ class RDFFilters(Extension):
     def __init__(self, environment):
         super().__init__(environment)
 
-        environment.filters['rdf_get'] = self.rdf_property
+        environment.filters['rdf_get'] = self.rdf_get
         environment.filters['to_python'] = self.to_python
         environment.filters['is_iri'] = self.is_iri
         environment.filters['is_bnode'] = self.is_bnode
@@ -111,6 +115,7 @@ class RDFFilters(Extension):
         environment.filters['description'] = self.description
         environment.filters['description_any'] = self.description_any
         environment.filters['relative_uri'] = self.relative_uri
+        environment.filters['markdown'] = self.markdown_filter
 
     @staticmethod
     def rdf_get(iri: str) -> URIRef:
@@ -954,3 +959,20 @@ class RDFFilters(Extension):
             path = '/' + resource_uri.removeprefix(environment.resource_prefix)
 
         return path
+
+    @staticmethod
+    def markdown_filter(text: str) -> str:
+        """Filter for generating HTML output from markdown input.
+        The output has already been marked as safe Markup, so things like
+        element brackets won't be escaped by Jinja.
+
+        Args:
+            text (str): the markdown input
+
+        Returns:
+            str: the html output
+        """
+        html = markdown(text)
+        safe = nh3.clean(html)
+        return Markup(safe)
+
