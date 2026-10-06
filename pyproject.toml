@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jinja-rdf"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Knud Möller", email="knud.moeller@berlinonline.de" },
 ]
@@ -19,9 +19,11 @@ classifiers = [
 ]
 dependencies = [
   "jinja2",
-  "pyyaml",
+  "markdown",
+  "nh3",
   "rdflib",
   "progressbar2",
+  "pyyaml",
 ]
 
 [project.urls]
