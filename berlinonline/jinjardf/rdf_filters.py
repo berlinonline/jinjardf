@@ -48,15 +48,15 @@ import logging
 from typing import Generator, List
 from urllib.parse import urlparse
 
-from jinja2.ext import Extension
+import nh3
 from jinja2 import pass_environment
-from rdflib import BNode, IdentifiedNode, Literal, URIRef, RDFS, Namespace
-from rdflib.term import Identifier, Node
-from rdflib.query import Result
-
+from jinja2.ext import Extension
 from markdown import markdown
 from markupsafe import Markup
-import nh3
+from rdflib import RDFS, BNode, IdentifiedNode, Literal, Namespace, URIRef
+from rdflib.collection import Collection
+from rdflib.query import Result
+from rdflib.term import Identifier, Node
 
 from berlinonline.jinjardf.rdf_environment import RDFEnvironment
 
@@ -116,6 +116,7 @@ class RDFFilters(Extension):
         environment.filters['description_any'] = self.description_any
         environment.filters['relative_uri'] = self.relative_uri
         environment.filters['markdown'] = self.markdown_filter
+        environment.filters['rdf_list'] = self.rdf_list
 
     @staticmethod
     def rdf_get(iri: str) -> URIRef:
@@ -976,3 +977,17 @@ class RDFFilters(Extension):
         safe = nh3.clean(html)
         return Markup(safe)
 
+    @staticmethod
+    @pass_environment
+    def rdf_list(environment: RDFEnvironment, list_head: IdentifiedNode) -> list:
+        """Returns a python list from a RDF list.
+
+        Args:
+            environment (RDFEnvironment): the RDFEnvironment
+            list_head (IdentifiedNode): the head node of the linked list
+
+        Returns:
+            list: the linked RDF list converted to a python list
+        """
+        graph = environment.graph
+        return list(Collection(graph, list_head))
