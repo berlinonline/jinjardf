@@ -23,6 +23,7 @@
     * [description\_any](#jinjardf.rdf_filters.RDFFilters.description_any)
     * [relative\_uri](#jinjardf.rdf_filters.RDFFilters.relative_uri)
     * [markdown\_filter](#jinjardf.rdf_filters.RDFFilters.markdown_filter)
+    * [rdf\_list](#jinjardf.rdf_filters.RDFFilters.rdf_list)
 
 <a id="jinjardf.rdf_filters"></a>
 
@@ -1255,4 +1256,74 @@ element brackets won't be escaped by Jinja.
 **Returns**:
 
 - `str` - the html output
+
+<a id="jinjardf.rdf_filters.RDFFilters.rdf_list"></a>
+
+### rdf\_list
+
+{% raw %}
+```python
+@staticmethod
+@pass_environment
+def rdf_list(environment: RDFEnvironment, list_head: IdentifiedNode) -> list
+```
+{% endraw %}
+
+Returns a python list from a ordered RDF list.
+
+**Examples**:
+
+  
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck)
+  
+{% raw %}
+```turtle
+…
+ducks:DonaldDuck family:hasFavouriteNephews (ducks:Huey ducks:Louie ducks:Dewey) ;
+# Not true to the story of course – Donald doesn't have favourites!
+…
+```
+{% endraw %}
+  
+{% raw %}
+```jinja
+{% set favourite_nephews = node | rdf_property_any(FAMILY.hasFavouriteNephews) %}
+<ol>
+  {% for nephew in favourite_nephews | rdf_list %}
+    <li>
+      <a href="{{ nephew | relative_uri }}">{{ nephew | title_any(['de', 'en']) }}</a>
+    </li>
+  {% endfor %}
+</ol>
+```
+{% endraw %}
+  
+  Output:
+  
+{% raw %}
+```html
+<ol>
+    <li>
+      <a href="/Huey">Tick</a>
+    </li>
+    <li>
+      <a href="/Louie">Track</a>
+    </li>
+    <li>
+      <a href="/Dewey">Trick</a>
+    </li>
+</ol>
+```
+{% endraw %}
+  
+
+**Arguments**:
+
+- `environment` _RDFEnvironment_ - the RDFEnvironment
+- `list_head` _IdentifiedNode_ - the head node of the linked list
+  
+
+**Returns**:
+
+- `list` - the linked RDF list converted to a python list
 

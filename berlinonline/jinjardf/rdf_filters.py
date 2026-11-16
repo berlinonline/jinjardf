@@ -106,6 +106,7 @@ class RDFFilters(Extension):
         environment.filters['rdf_property'] = self.rdf_property
         environment.filters['rdf_property_any'] = self.rdf_property_any
         environment.filters['rdf_inverse_property'] = self.rdf_inverse_property
+        environment.filters['rdf_inverse_property_any'] = self.rdf_inverse_property_any
         environment.filters['sparql_query'] = self.sparql_query
         environment.filters['statements_as_subject'] = self.statements_as_subject
         environment.filters['statements_as_object'] = self.statements_as_object
@@ -980,7 +981,45 @@ class RDFFilters(Extension):
     @staticmethod
     @pass_environment
     def rdf_list(environment: RDFEnvironment, list_head: IdentifiedNode) -> list:
-        """Returns a python list from a RDF list.
+        """Returns a python list from a ordered RDF list.
+
+        Examples:
+
+        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck
+
+        ```turtle
+        …
+        ducks:DonaldDuck family:hasFavouriteNephews (ducks:Huey ducks:Louie ducks:Dewey) ;
+        # Not true to the story of course – Donald doesn't have favourites!
+        …
+        ```
+
+        ```jinja
+        {% set favourite_nephews = node | rdf_property_any(FAMILY.hasFavouriteNephews) %}
+        <ol>
+          {% for nephew in favourite_nephews | rdf_list %}
+            <li>
+              <a href="{{ nephew | relative_uri }}">{{ nephew | title_any(['de', 'en']) }}</a>
+            </li>
+          {% endfor %}
+        </ol>
+        ```
+
+        Output:
+
+        ```html
+        <ol>
+            <li>
+              <a href="/Huey">Tick</a>
+            </li>
+            <li>
+              <a href="/Louie">Track</a>
+            </li>
+            <li>
+              <a href="/Dewey">Trick</a>
+            </li>
+        </ol>
+        ```
 
         Args:
             environment (RDFEnvironment): the RDFEnvironment
