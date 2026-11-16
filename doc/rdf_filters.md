@@ -1274,7 +1274,7 @@ Returns a python list from a ordered RDF list.
 **Examples**:
 
   
-  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck)
+  - `node`: [https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck](https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck)
   
 {% raw %}
 ```turtle

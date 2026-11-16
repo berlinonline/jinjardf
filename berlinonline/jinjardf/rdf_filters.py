@@ -985,7 +985,7 @@ class RDFFilters(Extension):
 
         Examples:
 
-        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonalsDuck
+        - `node`: https://berlinonline.github.io/jinja-rdf-demo/example/ducks/DonaldDuck
 
         ```turtle
         …
